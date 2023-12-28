@@ -6,13 +6,12 @@ import org.modelmapper.ModelMapper;
 
 public class UsersMapper {
 
-    private static ModelMapper modelMapper = new ModelMapper();
-
-    public static UsersDTO toDto(Users userEntity) {
-        return modelMapper.map(userEntity, UsersDTO.class);
-    }
-
-    public static Users toEntity(UsersDTO userDTO) {
-        return modelMapper.map(userDTO, Users.class);
+    public static UsersDTO convertToDto(Users users) {
+        UsersDTO userDto = new UsersDTO();
+        userDto.setUsername(users.getUsername());
+        userDto.setRole(users.getRole());
+        userDto.setMobileNumber(users.getMobileNumber());
+        userDto.setGender(users.getGender());
+        return userDto;
     }
 }
