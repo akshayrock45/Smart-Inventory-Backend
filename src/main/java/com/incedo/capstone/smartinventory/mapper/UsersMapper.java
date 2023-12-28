@@ -8,6 +8,8 @@ public class UsersMapper {
 
     public static UsersDTO convertToDto(Users users) {
         UsersDTO userDto = new UsersDTO();
+        userDto.setUserId(users.getUserId());
+        userDto.setEmail(users.getEmail());
         userDto.setUsername(users.getUsername());
         userDto.setRole(users.getRole());
         userDto.setMobileNumber(users.getMobileNumber());

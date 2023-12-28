@@ -27,9 +27,9 @@ public class UsersService {
 //        String encryptedPwd = bcrypt.encode(user.getPwd());
 //        user.setPwd(encryptedPwd);
 
-        boolean existingUser = usersRepository.existsById(user.getUsername());
+        Users existingUser = usersRepository.findByUsername(user.getUsername());
 
-        if(existingUser)
+        if(existingUser != null)
         {
             throw  new UserCreationException("User Already Exist!");
         }
@@ -40,6 +40,20 @@ public class UsersService {
             }
             throw new UserCreationException("There is Some Problem Creating the User");
         }
+
+//        boolean existingUser = usersRepository.existsById(user.getUsername());
+
+//        if(existingUser)
+//        {
+//            throw  new UserCreationException("User Already Exist!");
+//        }
+//        else {
+//            Users savedUser = usersRepository.save(user);
+//            if (savedUser != null) {
+//                return "User Created";
+//            }
+//            throw new UserCreationException("There is Some Problem Creating the User");
+//        }
 
     }
 
@@ -52,6 +66,7 @@ public class UsersService {
             existingUser.setRole(updatedUserDto.getRole());
             existingUser.setMobileNumber(updatedUserDto.getMobileNumber());
             existingUser.setGender(updatedUserDto.getGender());
+
 
             // Save the updated user
             Users updatedUser = usersRepository.save(existingUser);
@@ -110,4 +125,13 @@ public class UsersService {
             throw new UserNotFoundException("User not found: " + user.getUsername());
         }
     }
+
+//    public List<UsersDTO> fetchAllUsersByName(String Username)
+//    {
+//        return usersRepository.findAll()
+//                .stream().
+//                map(UsersMapper::convertToDto).
+//                collect(Collectors.toList());
+//
+//    }
 }

@@ -4,22 +4,44 @@ import lombok.Data;
 
 public class UsersDTO {
 
-//    private Long userId;
+    private Long userId;
     private String username;
     private String role;
     private long mobileNumber;
     private String gender;
 
+    private String email;
+
+
+
+
     @Override
     public String toString() {
         return "UsersDTO{" +
-                "username='" + username + '\'' +
+                "userId=" + userId +
+                ", username='" + username + '\'' +
                 ", role='" + role + '\'' +
                 ", mobileNumber=" + mobileNumber +
                 ", gender='" + gender + '\'' +
+                ", email='" + email + '\'' +
                 '}';
     }
 
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     public String getUsername() {
         return username;

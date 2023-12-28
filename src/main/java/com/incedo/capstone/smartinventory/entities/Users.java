@@ -9,25 +9,45 @@ import lombok.Data;
 @Entity
 public class Users {
 
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private Long userId;
-
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long userId;
+
     private String username;
     private String pwd;
     private String role;
     private long mobileNumber;
     private String gender;
 
+    private String email;
+
     @Override
     public String toString() {
         return "Users{" +
-                "username='" + username + '\'' +
+                "userId=" + userId +
+                ", username='" + username + '\'' +
                 ", pwd='" + pwd + '\'' +
                 ", role='" + role + '\'' +
                 ", mobileNumber=" + mobileNumber +
                 ", gender='" + gender + '\'' +
+                ", email='" + email + '\'' +
                 '}';
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public String getUsername() {
