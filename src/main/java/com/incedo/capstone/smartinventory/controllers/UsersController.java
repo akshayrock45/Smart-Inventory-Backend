@@ -38,14 +38,14 @@ public class UsersController {
             return re;
     }
 
-    @PutMapping("/{username}")
+    @PutMapping("/{userId}")
     @Operation(summary = "Update Customer Here")
-    public ResponseEntity<Object> updateUserByUsername(
-            @PathVariable("username") String username,
+    public ResponseEntity<Object> updateUserById(
+            @PathVariable("userId") long userId,
             @RequestBody UsersDTO updatedUserDto) {
 
         try {
-            UsersDTO updatedUser = usersService.updateUser(username, updatedUserDto);
+            UsersDTO updatedUser = usersService.updateUser(userId, updatedUserDto);
             return new ResponseEntity<>(updatedUser, HttpStatus.OK);
         } catch (UserNotFoundException ex) {
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
@@ -63,14 +63,27 @@ public class UsersController {
 
 
     @GetMapping("/{username}")
-    @Operation(summary = "Fetch Customer By Name")
-    public ResponseEntity<Object> getUserById(@PathVariable("username") String username) {
+    @Operation(summary = "Fetch Customer list  By Name")
+    public ResponseEntity<Object> getUserByName(@PathVariable("username") String username) {
         try {
-            UsersDTO userDto = usersService.fetchUserByName(username);
+            List<UsersDTO> userDto = usersService.fetchUserByName(username);
             return new ResponseEntity<>(userDto, HttpStatus.OK);
         } catch (UserNotFoundException ex) {
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
         }
+    }
+
+    @GetMapping("/users/{userId}")
+    @Operation(summary = "Get users by id")
+    public ResponseEntity<Object> getuserById(@PathVariable("userId") long userId)
+    {
+        try{
+            UsersDTO userDto = usersService.fetchById(userId);
+            return new ResponseEntity<>(userDto, HttpStatus.OK);
+        }
+        catch(UserNotFoundException unfe){
+            return new ResponseEntity<>(unfe.getMessage(), HttpStatus.NOT_FOUND);
+    }
     }
 
     @DeleteMapping("/{username}")
