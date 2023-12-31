@@ -19,7 +19,7 @@ public class UsersController {
     @Autowired
     UsersService usersService;
 
-    @PostMapping("/addUsers")
+    @PostMapping("/users/addUsers")
     @Operation(summary = "Add Customer Here")
     public ResponseEntity<String> addUser(@RequestBody Users user) {
         String message = usersService.addUser(user);
@@ -38,7 +38,7 @@ public class UsersController {
             return re;
     }
 
-    @PutMapping("/{userId}")
+    @PutMapping("/users/putByUserId/{userId}")
     @Operation(summary = "Update Customer Here")
     public ResponseEntity<Object> updateUserById(
             @PathVariable("userId") long userId,
@@ -54,7 +54,7 @@ public class UsersController {
         }
     }
 
-    @GetMapping
+    @GetMapping("/users/getAllUsers")
     @Operation(summary = "Fetch All Customers")
     public List<UsersDTO> fetchUsers()
     {
@@ -62,7 +62,7 @@ public class UsersController {
     }
 
 
-    @GetMapping("/{username}")
+    @GetMapping("/users/getByUsername/{username}")
     @Operation(summary = "Fetch Customer list  By Name")
     public ResponseEntity<Object> getUserByName(@PathVariable("username") String username) {
         try {
@@ -73,7 +73,7 @@ public class UsersController {
         }
     }
 
-    @GetMapping("/users/{userId}")
+    @GetMapping("/users/getByUserId/{userId}")
     @Operation(summary = "Get users by id")
     public ResponseEntity<Object> getuserById(@PathVariable("userId") long userId)
     {
@@ -86,7 +86,7 @@ public class UsersController {
     }
     }
 
-    @DeleteMapping("/{username}")
+    @DeleteMapping("/users/deleteUsersByUsername/{username}")
     @Operation(summary = "Delete Customer")
     public ResponseEntity<String> deleteUserByUsername(@PathVariable("username") String username) {
         try {
@@ -99,7 +99,7 @@ public class UsersController {
         }
     }
 
-    @PostMapping("/authenticateUsers")
+    @PostMapping("/users/authenticateUsers")
     @Operation(summary = "Authenticate Customer")
     public ResponseEntity<Object> authenticateUser(@RequestBody Users user) {
         try {

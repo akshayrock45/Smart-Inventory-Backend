@@ -1,26 +1,18 @@
-package com.incedo.capstone.smartinventory.entities;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+package com.incedo.capstone.smartinventory.dto;
 
 import java.time.LocalDate;
 
-@Entity
-public class Godowns {
+public class GodownsDTO {
 
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long godownId;
-    private String location = null;
-    private Double capacityInQuintals = null;
-    private LocalDate startDate = null;
+    private String location;
+    private Double capacityInQuintals;
+    private LocalDate startDate;
+
 
     @Override
     public String toString() {
-        return "Godowns{" +
+        return "GodownsDTO{" +
                 "godownId=" + godownId +
                 ", location='" + location + '\'' +
                 ", capacityInQuintals=" + capacityInQuintals +

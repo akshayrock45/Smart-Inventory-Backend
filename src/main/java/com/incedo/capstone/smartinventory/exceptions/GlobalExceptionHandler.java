@@ -19,14 +19,28 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<String> handlingException(UserNotFoundException unfe)
     {
-        ResponseEntity<String> re = new ResponseEntity<>(unfe.getMessage(), HttpStatus.BAD_REQUEST);
+        ResponseEntity<String> re = new ResponseEntity<>(unfe.getMessage(), HttpStatus.NOT_FOUND);
         return re;
     }
 
     @ExceptionHandler(IncorrectPasswordException.class)
     public ResponseEntity<String> handlingException(IncorrectPasswordException ipe)
     {
-        ResponseEntity<String> re = new ResponseEntity<>(ipe.getMessage(), HttpStatus.BAD_REQUEST);
+        ResponseEntity<String> re = new ResponseEntity<>(ipe.getMessage(), HttpStatus.UNAUTHORIZED);
+        return re;
+    }
+
+    @ExceptionHandler(GodownCreationException.class)
+    public ResponseEntity<String> handlingException(GodownCreationException gce)
+    {
+        ResponseEntity<String> re = new ResponseEntity<>(gce.getMessage(), HttpStatus.BAD_REQUEST);
+        return re;
+    }
+
+    @ExceptionHandler(GodownNotFoundException.class)
+    public ResponseEntity<String> handlingException(GodownNotFoundException gnfe)
+    {
+        ResponseEntity<String> re = new ResponseEntity<>(gnfe.getMessage(), HttpStatus.NOT_FOUND);
         return re;
     }
 }
