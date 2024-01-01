@@ -43,4 +43,18 @@ public class GlobalExceptionHandler {
         ResponseEntity<String> re = new ResponseEntity<>(gnfe.getMessage(), HttpStatus.NOT_FOUND);
         return re;
     }
+
+    @ExceptionHandler(InwardsCreationException.class)
+    public ResponseEntity<String> handlingException(InwardsCreationException ice)
+    {
+        ResponseEntity<String> re = new ResponseEntity<>(ice.getMessage(), HttpStatus.BAD_REQUEST);
+        return re;
+    }
+
+    @ExceptionHandler(InwardsNotFoundException.class)
+    public ResponseEntity<String> handlingException(InwardsNotFoundException infe)
+    {
+        ResponseEntity<String> re = new ResponseEntity<>(infe.getMessage(), HttpStatus.NOT_FOUND);
+        return re;
+    }
 }
