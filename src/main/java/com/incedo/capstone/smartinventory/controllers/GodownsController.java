@@ -90,4 +90,12 @@ public class GodownsController {
             return new ResponseEntity<>(gnfe.getMessage(),HttpStatus.NOT_FOUND);
         }
     }
+
+
+    @GetMapping("/getAllGodowns")
+    @Operation(summary = "Fetches all Godowns")
+    public List<Godowns> fetchAllGodowns(){
+        return godownsService.fetchGodowns2();
+    }
+
 }
