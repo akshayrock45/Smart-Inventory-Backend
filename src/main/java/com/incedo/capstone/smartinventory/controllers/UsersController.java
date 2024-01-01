@@ -19,7 +19,7 @@ public class UsersController {
     @Autowired
     UsersService usersService;
 
-    @PostMapping("/addUsers")
+    @PostMapping("/users/addUsers")
     @Operation(summary = "Add Customer Here")
     public ResponseEntity<String> addUser(@RequestBody Users user) {
         String message = usersService.addUser(user);
@@ -38,14 +38,14 @@ public class UsersController {
             return re;
     }
 
-    @PutMapping("/{username}")
+    @PutMapping("/users/putByUserId/{userId}")
     @Operation(summary = "Update Customer Here")
-    public ResponseEntity<Object> updateUserByUsername(
-            @PathVariable("username") String username,
+    public ResponseEntity<Object> updateUserById(
+            @PathVariable("userId") long userId,
             @RequestBody UsersDTO updatedUserDto) {
 
         try {
-            UsersDTO updatedUser = usersService.updateUser(username, updatedUserDto);
+            UsersDTO updatedUser = usersService.updateUser(userId, updatedUserDto);
             return new ResponseEntity<>(updatedUser, HttpStatus.OK);
         } catch (UserNotFoundException ex) {
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
@@ -54,7 +54,7 @@ public class UsersController {
         }
     }
 
-    @GetMapping
+    @GetMapping("/users/getAllUsers")
     @Operation(summary = "Fetch All Customers")
     public List<UsersDTO> fetchUsers()
     {
@@ -62,18 +62,31 @@ public class UsersController {
     }
 
 
-    @GetMapping("/{username}")
-    @Operation(summary = "Fetch Customer By Name")
-    public ResponseEntity<Object> getUserById(@PathVariable("username") String username) {
+    @GetMapping("/users/getByUsername/{username}")
+    @Operation(summary = "Fetch Customer list  By Name")
+    public ResponseEntity<Object> getUserByName(@PathVariable("username") String username) {
         try {
-            UsersDTO userDto = usersService.fetchUserByName(username);
+            List<UsersDTO> userDto = usersService.fetchUserByName(username);
             return new ResponseEntity<>(userDto, HttpStatus.OK);
         } catch (UserNotFoundException ex) {
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 
-    @DeleteMapping("/{username}")
+    @GetMapping("/users/getByUserId/{userId}")
+    @Operation(summary = "Get users by id")
+    public ResponseEntity<Object> getuserById(@PathVariable("userId") long userId)
+    {
+        try{
+            UsersDTO userDto = usersService.fetchById(userId);
+            return new ResponseEntity<>(userDto, HttpStatus.OK);
+        }
+        catch(UserNotFoundException unfe){
+            return new ResponseEntity<>(unfe.getMessage(), HttpStatus.NOT_FOUND);
+    }
+    }
+
+    @DeleteMapping("/users/deleteUsersByUsername/{username}")
     @Operation(summary = "Delete Customer")
     public ResponseEntity<String> deleteUserByUsername(@PathVariable("username") String username) {
         try {
@@ -86,7 +99,7 @@ public class UsersController {
         }
     }
 
-    @PostMapping("/authenticateUsers")
+    @PostMapping("/users/authenticateUsers")
     @Operation(summary = "Authenticate Customer")
     public ResponseEntity<Object> authenticateUser(@RequestBody Users user) {
         try {
