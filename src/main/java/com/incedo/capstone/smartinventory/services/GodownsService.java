@@ -95,4 +95,8 @@ public class GodownsService {
             throw new GodownNotFoundException("Godown Not found for id: " + godownId);
 
     }
+
+    public List<Godowns> fetchGodowns2() {
+        return godownsRepository.findAll();
+    }
 }

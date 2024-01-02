@@ -1,0 +1,13 @@
+- mapping for inwards and outwards with godowns
+- create product entity with CRUD Operations
+- map Product entity with inwards and outwrads
+-
+
+
+
+Issues
+
+- Need to change the entity field for null and not null. when i give without godown name also it is saving so need to change those in the entity
+
+- -> When trying to add godown with a same manager as other need to throw proper error message.
+-> When trying to add godown with a manager who's not there need to throw proper error message.
