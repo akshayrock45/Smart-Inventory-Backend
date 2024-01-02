@@ -23,6 +23,17 @@ public class Products {
     @ManyToMany(mappedBy = "productsToPurchase")
     private List<Inwards> inwards;
 
+    @ManyToMany(mappedBy = "productsToDeliver")
+    private List<Outwards> outwards;
+
+    public List<Outwards> getOutwards() {
+        return outwards;
+    }
+
+    public void setOutwards(List<Outwards> outwards) {
+        this.outwards = outwards;
+    }
+
     public List<Inwards> getInwards() {
         return inwards;
     }
@@ -39,6 +50,8 @@ public class Products {
                 ", price=" + price +
                 ", quantity=" + quantity +
                 ", stock=" + stock +
+                ", inwards=" + inwards +
+                ", outwards=" + outwards +
                 '}';
     }
 
