@@ -1,9 +1,8 @@
 package com.incedo.capstone.smartinventory.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 public class Outwards {
@@ -22,6 +21,17 @@ public class Outwards {
     private String BillValue;
     private String BillCheckedBy;
 
+    @ManyToMany
+    private List<Products> productsToDeliver;
+
+    public List<Products> getProductsToDeliver() {
+        return productsToDeliver;
+    }
+
+    public void setProductsToDeliver(List<Products> productsToDeliver) {
+        this.productsToDeliver = productsToDeliver;
+    }
+
     @Override
     public String toString() {
         return "Outwards{" +
@@ -36,6 +46,7 @@ public class Outwards {
                 ", ReceiptNo=" + ReceiptNo +
                 ", BillValue='" + BillValue + '\'' +
                 ", BillCheckedBy='" + BillCheckedBy + '\'' +
+                ", productsToDeliver=" + productsToDeliver +
                 '}';
     }
 

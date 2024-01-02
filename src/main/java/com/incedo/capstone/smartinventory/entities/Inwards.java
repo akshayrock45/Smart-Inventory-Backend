@@ -2,6 +2,8 @@ package com.incedo.capstone.smartinventory.entities;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 public class Inwards {
 
@@ -18,6 +20,16 @@ public class Inwards {
     private int ReceiptNo;
     private String BillCheckedBy;
 
+    @ManyToMany
+    private List<Products> productsToPurchase;
+
+    public List<Products> getProductsToPurchase() {
+        return productsToPurchase;
+    }
+
+    public void setProductsToPurchase(List<Products> productsToPurchase) {
+        this.productsToPurchase = productsToPurchase;
+    }
 
     @Override
     public String toString() {
@@ -31,6 +43,7 @@ public class Inwards {
                 ", receivedBy='" + receivedBy + '\'' +
                 ", ReceiptNo=" + ReceiptNo +
                 ", BillCheckedBy='" + BillCheckedBy + '\'' +
+                ", productsToPurchase=" + productsToPurchase +
                 '}';
     }
 

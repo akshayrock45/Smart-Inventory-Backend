@@ -2,10 +2,12 @@ package com.incedo.capstone.smartinventory.services;
 
 import com.incedo.capstone.smartinventory.dto.OutwardsDTO;
 import com.incedo.capstone.smartinventory.entities.Outwards;
+import com.incedo.capstone.smartinventory.entities.Products;
 import com.incedo.capstone.smartinventory.exceptions.OutwardsCreationException;
 import com.incedo.capstone.smartinventory.exceptions.OutwardsNotFoundException;
 import com.incedo.capstone.smartinventory.mapper.OutwardsMapper;
 import com.incedo.capstone.smartinventory.repository.OutwardsRepository;
+import com.incedo.capstone.smartinventory.repository.ProductsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,12 +21,33 @@ public class OutwardsService {
     @Autowired
     OutwardsRepository outwardsRepository;
 
+    @Autowired
+    ProductsRepository productsRepository;
+
     public String addOutwards(Outwards outwards) {
 
         Outwards savedOutwards = outwardsRepository.save(outwards);
 
         if(savedOutwards != null)
         {
+
+            List<Products> outgoingProducts = outwards.getProductsToDeliver();
+
+            for(Products product: outgoingProducts)
+            {
+                Optional<Products> op = productsRepository.findById(product.getProductId());
+
+                if(op.isPresent())
+                {
+                    Products existingProducts = op.get();
+
+                    // should add an if case and check whether the existing products Quantity should be greater than the outwards products quantity.
+                    // or else we have to throw an exception that not enough products Quantity to deliver and should not add the outwards.....
+                    existingProducts.setQuantity(existingProducts.getQuantity() - outwards.getQuantity());
+
+                    productsRepository.save(existingProducts);
+                }
+            }
             return "Added Outwards";
         }
         else {

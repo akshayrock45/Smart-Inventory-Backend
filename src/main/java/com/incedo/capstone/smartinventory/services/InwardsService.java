@@ -2,10 +2,12 @@ package com.incedo.capstone.smartinventory.services;
 
 import com.incedo.capstone.smartinventory.dto.InwardsDTO;
 import com.incedo.capstone.smartinventory.entities.Inwards;
+import com.incedo.capstone.smartinventory.entities.Products;
 import com.incedo.capstone.smartinventory.exceptions.InwardsCreationException;
 import com.incedo.capstone.smartinventory.exceptions.InwardsNotFoundException;
 import com.incedo.capstone.smartinventory.mapper.InwardsMapper;
 import com.incedo.capstone.smartinventory.repository.InwardsRepository;
+import com.incedo.capstone.smartinventory.repository.ProductsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,11 +21,28 @@ public class InwardsService {
     @Autowired
     InwardsRepository inwardsRepository;
 
+    @Autowired
+    ProductsRepository productsRepository;
+
     public String addInwards(Inwards inwards) {
 
         Inwards savedInwards = inwardsRepository.save(inwards);
 
         if (savedInwards != null) {
+
+            List<Products> incomingproducts = inwards.getProductsToPurchase();
+
+            for(Products product: incomingproducts)
+            {
+                Optional<Products> op = productsRepository.findById(product.getProductId());
+                if(op.isPresent())
+                {
+                    Products existingProducts = op.get();
+                    existingProducts.setQuantity(existingProducts.getQuantity() + inwards.getQuantity());
+
+                    productsRepository.save(existingProducts);
+                }
+            }
             return "Inwards Added";
         }
         throw new InwardsCreationException("There is some problem creating Inwards");
