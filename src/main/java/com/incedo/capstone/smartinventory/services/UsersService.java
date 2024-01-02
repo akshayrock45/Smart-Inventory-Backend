@@ -7,6 +7,7 @@ import com.incedo.capstone.smartinventory.exceptions.UserCreationException;
 import com.incedo.capstone.smartinventory.exceptions.UserNotFoundException;
 import com.incedo.capstone.smartinventory.mapper.UsersMapper;
 import com.incedo.capstone.smartinventory.repository.UsersRepository;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,9 +29,11 @@ public class UsersService {
 //        String encryptedPwd = bcrypt.encode(user.getPwd());
 //        user.setPwd(encryptedPwd);
 
-        Users existingUser = usersRepository.findByUsername(user.getUsername());
+        Users existingUser = usersRepository.findByEmail(user.getEmail());
 
-        if(existingUser != null)
+
+
+        if(existingUser != null && existingUser.getEmail().equals(user.getEmail()))
         {
             throw  new UserCreationException("User Already Exist!");
         }
@@ -57,15 +61,18 @@ public class UsersService {
 
     }
 
-    public UsersDTO updateUser(String username, UsersDTO updatedUserDto) {
+    public UsersDTO updateUser(long userId, UsersDTO updatedUserDto) {
         // Find the existing user by username
-        Users existingUser = usersRepository.findByUsername(username);
+        Optional<Users>  op = usersRepository.findById(userId);
 
-        if (existingUser != null) {
+        if (op.isPresent()) {
             // Update the user with the new values
+            Users existingUser = op.get();
+            existingUser.setUsername(updatedUserDto.getUsername());
             existingUser.setRole(updatedUserDto.getRole());
             existingUser.setMobileNumber(updatedUserDto.getMobileNumber());
             existingUser.setGender(updatedUserDto.getGender());
+            existingUser.setEmail(updatedUserDto.getEmail());
 
 
             // Save the updated user
@@ -74,7 +81,7 @@ public class UsersService {
             // Convert and return the updated user DTO
             return UsersMapper.convertToDto(updatedUser);
         } else {
-            throw new UserNotFoundException("User not found with username: " + username);
+            throw new UserNotFoundException("User not found with username: " + userId);
         }
     }
 
@@ -85,13 +92,34 @@ public class UsersService {
                 collect(Collectors.toList());
     }
 
-    public UsersDTO fetchUserByName(String username) {
-        Users user = usersRepository.findByUsername(username);
-        if (user != null) {
-            return UsersMapper.convertToDto(user);
-        } else {
-            throw new UserNotFoundException("No Record found for the user: " + username);
+//    public List<UsersDTO> fetchUserByName(String username) {
+//        Users user = usersRepository.findByUsername(username);
+//
+//        try {
+//            List<Users> users = usersRepository.findByUsernameList(username)
+//                    .stream().
+//                    map(UsersMapper::convertToDto).
+//                    collect(Collectors.toList());
+//        } catch (Exception e) {
+//            throw new RuntimeException(e);
+//        }
+////        if (user != null) {
+////            return UsersMapper.convertToDto(user);
+////        } else {
+////            throw new UserNotFoundException("No Record found for the user: " + username);
+////        }
+//    }
+
+    public List<UsersDTO> fetchUserByName(String username) {
+        List<Users> users = usersRepository.findByUsernameContaining(username);
+
+        if (users.isEmpty()) {
+            throw new UserNotFoundException("No Records found for the username pattern: " + username);
         }
+
+        return users.stream()
+                .map(UsersMapper::convertToDto)
+                .collect(Collectors.toList());
     }
 
     public String deleteUser(String username) {
@@ -124,6 +152,18 @@ public class UsersService {
             // User does not exist, throw an exception
             throw new UserNotFoundException("User not found: " + user.getUsername());
         }
+    }
+
+    public UsersDTO fetchById(long userId) {
+        Optional<Users> op = usersRepository.findById(userId);
+
+        if(op.isPresent())
+        {
+            Users existingUser = op.get();
+
+            return UsersMapper.convertToDto(existingUser);
+        }
+        throw new UserNotFoundException("No records found for: " + userId);
     }
 
 //    public List<UsersDTO> fetchAllUsersByName(String Username)
