@@ -1,9 +1,13 @@
 package com.incedo.capstone.smartinventory.controllers;
 
+import com.incedo.capstone.smartinventory.dto.InwardsDTO;
+import com.incedo.capstone.smartinventory.dto.ProductsDTO;
 import com.incedo.capstone.smartinventory.entities.Products;
 
+import com.incedo.capstone.smartinventory.exceptions.InwardsNotFoundException;
 import com.incedo.capstone.smartinventory.exceptions.ProductsNotFoundException;
 import com.incedo.capstone.smartinventory.services.ProductsService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,50 +20,54 @@ public class ProductsController {
     @Autowired
     ProductsService productsService;
 
-    @PostMapping("/addProduct")
+    @PostMapping("products/addProducts")
+    @Operation(summary="add products here")
     public ResponseEntity<Products> addProducts(@RequestBody Products products){
         Products addedProduct=productsService.addProduct(products);
         return new ResponseEntity<>(addedProduct,HttpStatus.CREATED);
     }
 
-    @GetMapping
-    public ResponseEntity<List<Products>> getAllProducts(){
-        List<Products> productList= productsService.getAllProducts();
-        if(productList!=null)
-        {
-            return new ResponseEntity<>(productList,HttpStatus.OK);
+    @GetMapping("/products/getAllProducts")
+    @Operation(summary = "Fetch all products")
+    public List<ProductsDTO> getAllProducts()
+    {
+        return productsService.getAllProducts();
+    }
 
+    @GetMapping("products/getById/{productsId}")
+    @Operation(summary = "Fetch Products by ID")
+    public ResponseEntity<Object> getProductbyId(@PathVariable("productsId") long productId)
+    {
+        try{
+            ProductsDTO productsDto = productsService.getProductById(productId);
+            return new ResponseEntity<>(productsDto,HttpStatus.OK);
         }
-        else
+        catch (ProductsNotFoundException infe)
         {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(infe.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Products> getProductsById(@PathVariable("id") int id){
-        Products product = productsService.getProductById(id);
-        if (product !=null)
-        {
-            return new ResponseEntity<>(product,HttpStatus.OK);
+    @PutMapping("products/putByProductsId/{productId}")
+    @Operation(summary = "Update products here")
+    public ResponseEntity<Object> updatedProductsById(@PathVariable ("productId") long productsId, @RequestBody ProductsDTO productsDto)
+    {
+        try{
+            ProductsDTO updatedProductsDto = productsService.updateProductsById(productsId, productsDto);
+            return new ResponseEntity<>(updatedProductsDto,HttpStatus.OK);
         }
-        else
+        catch (InwardsNotFoundException infe)
         {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(infe.getMessage(), HttpStatus.NOT_FOUND);
+        }
+        catch (Exception e)
+        {
+            return new ResponseEntity<>("An error occurred while updating the Products.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @PutMapping("/{productId}")
-    public ResponseEntity<Products> updateProduct(@PathVariable("productId") long productId, @RequestBody Products product) {
-        Products updatedProduct = productsService.updateProduct(productId, product);
-        if (updatedProduct != null) {
-            return new ResponseEntity<>(updatedProduct,HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
-
-    @DeleteMapping("/{productId}")
+    @DeleteMapping("products/deleteById/{productId}")
+    @Operation(summary = "delete Products by Products Id")
     public ResponseEntity<String> deleteByProductId(@PathVariable("productId") long productId)
     {
         try{

@@ -1,14 +1,16 @@
 package com.incedo.capstone.smartinventory.services;
 
+import com.incedo.capstone.smartinventory.dto.ProductsDTO;
 import com.incedo.capstone.smartinventory.entities.Products;
-
 import com.incedo.capstone.smartinventory.exceptions.ProductsNotFoundException;
+import com.incedo.capstone.smartinventory.mapper.ProductsMapper;
 import com.incedo.capstone.smartinventory.repository.ProductsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductsService {
@@ -20,23 +22,36 @@ public class ProductsService {
 
     }
 
-    public Products getProductById(long productId){
-        Optional<Products> op= productsRepository.findById(productId);
-        return op.orElse(null);
+    public ProductsDTO getProductById(long productsId) {
+
+        Optional<Products> op = productsRepository.findById(productsId);
+
+        if (op.isPresent()) {
+            Products existingProducts = op.get();
+
+            return ProductsMapper.convertToDto(existingProducts);
+        }
+        throw new ProductsNotFoundException("Products not found for id: " + productsId);
     }
 
-    public Products updateProduct(long id, Products updatedProduct){
-        Products existingProduct = getProductById(id);
-        if (existingProduct != null) {
+    public ProductsDTO updateProductsById(long productsId, ProductsDTO productsDto) {
 
-            existingProduct.setProductName(updatedProduct.getProductName());
-            existingProduct.setPrice(updatedProduct.getPrice());
-            existingProduct.setQuantity(updatedProduct.getQuantity());
-            existingProduct.setStock(updatedProduct.isStock());
+        Optional<Products> op = productsRepository.findById(productsId);
 
-            return productsRepository.save(existingProduct);
+        if (op.isPresent()) {
+            Products existingProduct = op.get();
+
+            existingProduct.setProductName(productsDto.getProductName());
+            existingProduct.setPrice(productsDto.getPrice());
+            existingProduct.setQuantity(productsDto.getQuantity());
+            existingProduct.setStock(productsDto.isStock());
+
+
+            Products savedProducts = productsRepository.save(existingProduct);
+
+            return ProductsMapper.convertToDto(savedProducts);
         } else {
-            return null;
+            throw new ProductsNotFoundException("Products not found for id: " + productsId);
         }
     }
     public String deleteProductById(long productId) {
@@ -56,7 +71,11 @@ public class ProductsService {
         throw new ProductsNotFoundException("Products not found for id: " + productId);
     }
 
-    public List<Products> getAllProducts() {
-        return productsRepository.findAll();
+    public List<ProductsDTO> getAllProducts() {
+
+        return productsRepository.findAll()
+                .stream()
+                .map(ProductsMapper::convertToDto)
+                .collect(Collectors.toList());
     }
 }
