@@ -1,12 +1,11 @@
 package com.incedo.capstone.smartinventory.controllers;
 
-import com.incedo.capstone.smartinventory.dto.InwardsDTO;
 import com.incedo.capstone.smartinventory.dto.ProductsDTO;
 import com.incedo.capstone.smartinventory.entities.Products;
 
-import com.incedo.capstone.smartinventory.exceptions.InwardsNotFoundException;
 import com.incedo.capstone.smartinventory.exceptions.ProductsNotFoundException;
 import com.incedo.capstone.smartinventory.services.ProductsService;
+
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -56,7 +55,7 @@ public class ProductsController {
             ProductsDTO updatedProductsDto = productsService.updateProductsById(productsId, productsDto);
             return new ResponseEntity<>(updatedProductsDto,HttpStatus.OK);
         }
-        catch (InwardsNotFoundException infe)
+        catch (ProductsNotFoundException infe)
         {
             return new ResponseEntity<>(infe.getMessage(), HttpStatus.NOT_FOUND);
         }
