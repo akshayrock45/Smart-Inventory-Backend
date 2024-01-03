@@ -20,9 +20,9 @@ public class Inwards {
     private int ReceiptNo;
     private String BillCheckedBy;
 
-//    @ManyToOne(optional= false)
-//    @JoinColumn(name="godown_iD" )
-//    private Godowns godowns;
+    @ManyToOne(optional= false)
+    @JoinColumn(name="godown_iD" )
+    private Godowns godowns;
 
 
     @ManyToMany
@@ -32,13 +32,13 @@ public class Inwards {
     private List<Products> productsToPurchase;
 
 
-//    public Godowns getGodowns() {
-//        return godowns;
-//    }
-//
-//    public void setGodowns(Godowns godowns) {
-//        this.godowns = godowns;
-//    }
+    public Godowns getGodowns() {
+        return godowns;
+    }
+
+    public void setGodowns(Godowns godowns) {
+        this.godowns = godowns;
+    }
 
     public List<Products> getProductsToPurchase() {
         return productsToPurchase;
