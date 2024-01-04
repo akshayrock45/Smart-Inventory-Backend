@@ -21,9 +21,9 @@ public class Outwards {
     private String BillValue;
     private String BillCheckedBy;
 
-//    @ManyToOne(optional= false)
-//    @JoinColumn(name="godown_iD" )
-//    private Godowns godowns;
+    @ManyToOne(optional= false)
+    @JoinColumn(name="godown_iD" )
+    private Godowns godowns;
 
     @ManyToMany
     @JoinTable(name = "outwards_products",
@@ -31,13 +31,13 @@ public class Outwards {
             inverseJoinColumns = @JoinColumn(name = "product_id"))
     private List<Products> productsToDeliver;
 
-//    public Godowns getGodowns() {
-//        return godowns;
-//    }
-//
-//    public void setGodowns(Godowns godowns) {
-//        this.godowns = godowns;
-//    }
+    public Godowns getGodowns() {
+        return godowns;
+    }
+
+    public void setGodowns(Godowns godowns) {
+        this.godowns = godowns;
+    }
 
     public List<Products> getProductsToDeliver() {
         return productsToDeliver;
@@ -61,7 +61,7 @@ public class Outwards {
                 ", ReceiptNo=" + ReceiptNo +
                 ", BillValue='" + BillValue + '\'' +
                 ", BillCheckedBy='" + BillCheckedBy + '\'' +
-//                ", godowns=" + godowns +
+                ", godowns=" + godowns +
                 ", productsToDeliver=" + productsToDeliver +
                 '}';
     }
