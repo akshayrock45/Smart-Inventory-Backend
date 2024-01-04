@@ -20,6 +20,9 @@ public class GodownsService {
     GodownsRepository godownsRepository;
 
     public String addGodown(Godowns godown) {
+        if (godown.getLocation() == null || godown.getLocation().isEmpty()) {
+            throw new GodownCreationException("Location cannot be null for a Godown");
+        }
         Godowns existingGodown = godownsRepository.findByLocation(godown.getLocation());
 
         if (existingGodown != null && existingGodown.getLocation().equals(godown.getLocation())) {
