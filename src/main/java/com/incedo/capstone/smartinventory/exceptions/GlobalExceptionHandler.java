@@ -71,4 +71,11 @@ public class GlobalExceptionHandler {
         return re;
     }
 
+    @ExceptionHandler(ReturnsNotFoundException.class)
+    public ResponseEntity<String> handlingException(ReturnsNotFoundException rnfe)
+    {
+        ResponseEntity<String> re = new ResponseEntity<>(rnfe.getMessage(), HttpStatus.NOT_FOUND);
+        return re;
+    }
+
 }

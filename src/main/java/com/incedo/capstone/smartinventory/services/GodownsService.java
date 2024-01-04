@@ -41,9 +41,9 @@ public class GodownsService {
             existingGodown.setLocation(godownsDto.getLocation());
             existingGodown.setCapacityInQuintals(godownsDto.getCapacityInQuintals());
 
-            Godowns uodatedGodown = godownsRepository.save(existingGodown);
+            Godowns updatedGodown = godownsRepository.save(existingGodown);
 
-            return GodownsMapper.convertToDto(uodatedGodown);
+            return GodownsMapper.convertToDto(updatedGodown);
         } else {
             throw new GodownNotFoundException("Godown not found with id: " + godownId);
         }

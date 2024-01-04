@@ -56,6 +56,8 @@ public class InwardsController {
         return inwardsService.fetchInwards();
     }
 
+
+
     @GetMapping("inwards/getById/{inwardsId}")
     @Operation(summary = "Fetch Inwarsds by ID")
     public ResponseEntity<Object> getInwardsbyId(@PathVariable("inwardsId") long inwardsId)
