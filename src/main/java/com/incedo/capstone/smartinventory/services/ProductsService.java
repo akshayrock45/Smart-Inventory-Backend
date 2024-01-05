@@ -44,7 +44,7 @@ public class ProductsService {
             existingProduct.setProductName(productsDto.getProductName());
             existingProduct.setPrice(productsDto.getPrice());
             existingProduct.setQuantity(productsDto.getQuantity());
-            existingProduct.setStock(productsDto.isStock());
+
 
 
             Products savedProducts = productsRepository.save(existingProduct);
@@ -59,7 +59,7 @@ public class ProductsService {
 
         if (op.isPresent()) {
             Products deleteProducts = op.get();
-            if (deleteProducts.isStock()) {
+            if (deleteProducts!=null) {
                 productsRepository.delete(deleteProducts);
                 return "Product deleted successfully";
             }
