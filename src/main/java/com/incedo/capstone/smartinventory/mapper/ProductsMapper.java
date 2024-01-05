@@ -5,15 +5,14 @@ import com.incedo.capstone.smartinventory.entities.Products;
 
 public class ProductsMapper {
 
-    public static ProductsDTO convertToDto(Products products)
-    {
+    public static ProductsDTO convertToDto(Products products) {
         ProductsDTO productsDto = new ProductsDTO();
 
         productsDto.setProductId(products.getProductId());
         productsDto.setProductName(products.getProductName());
         productsDto.setPrice(products.getPrice());
         productsDto.setQuantity(products.getQuantity());
-        productsDto.setStock(products.isStock());
+
 
         return productsDto;
     }

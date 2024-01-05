@@ -17,8 +17,6 @@ public class Products {
 
     private int quantity;
 
-    private boolean stock;
-
 
     @ManyToMany(mappedBy = "productsToPurchase")
     private List<Inwards> inwards;
@@ -49,7 +47,7 @@ public class Products {
                 ", productName='" + productName + '\'' +
                 ", price=" + price +
                 ", quantity=" + quantity +
-                ", stock=" + stock +
+
                 ", inwards=" + inwards +
                 ", outwards=" + outwards +
                 '}';
@@ -86,12 +84,5 @@ public class Products {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
-
-    public boolean isStock() {
-        return stock;
-    }
-
-    public void setStock(boolean stock) {
-        this.stock = stock;
-    }
 }
+
