@@ -15,7 +15,7 @@ public class Users {
 
     private String username;
     private String pwd;
-    private String role;
+    private String role = "GUEST";
     private long mobileNumber;
     private String gender;
 
