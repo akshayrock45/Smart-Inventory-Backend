@@ -35,7 +35,7 @@ public class UsersService {
 
         if(existingUser != null && existingUser.getEmail().equals(user.getEmail()))
         {
-            throw  new UserCreationException("User Already Exist!");
+            throw  new UserCreationException("User Already Exist! with the same Email ");
         }
         else {
             Users savedUser = usersRepository.save(user);
@@ -60,6 +60,7 @@ public class UsersService {
 //        }
 
     }
+
 
     public UsersDTO updateUser(long userId, UsersDTO updatedUserDto) {
         // Find the existing user by username
