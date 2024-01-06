@@ -27,7 +27,9 @@ public class GodownsService {
 
             // Check if the user is already associated with another godown
             Users existingUser = godown.getUsers(); // Assuming getUsers returns the associated user
-
+            if (existingUser==null){
+                throw new GodownCreationException("User id field is empty");
+            }
             if (existingUser != null) {
                 Godowns existingGodown = godownsRepository.findByUsersUserId(existingUser.getUserId());
                 if (existingGodown != null) {
