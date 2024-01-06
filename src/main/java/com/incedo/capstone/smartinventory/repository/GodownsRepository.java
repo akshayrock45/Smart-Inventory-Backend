@@ -14,4 +14,6 @@ public interface GodownsRepository extends JpaRepository<Godowns,Long> {
 
     @Query("SELECT u FROM Godowns u WHERE u.location LIKE %:location%")
     List<Godowns> findBylocationContaining(@Param("location") String location);
+
+    Godowns findByUsersUserId(Long userId);
 }

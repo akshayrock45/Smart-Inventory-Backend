@@ -2,10 +2,12 @@ package com.incedo.capstone.smartinventory.services;
 
 import com.incedo.capstone.smartinventory.dto.GodownsDTO;
 import com.incedo.capstone.smartinventory.entities.Godowns;
+import com.incedo.capstone.smartinventory.entities.Users;
 import com.incedo.capstone.smartinventory.exceptions.GodownCreationException;
 import com.incedo.capstone.smartinventory.exceptions.GodownNotFoundException;
 import com.incedo.capstone.smartinventory.mapper.GodownsMapper;
 import com.incedo.capstone.smartinventory.repository.GodownsRepository;
+import com.incedo.capstone.smartinventory.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,8 +20,30 @@ public class GodownsService {
 
     @Autowired
     GodownsRepository godownsRepository;
-
+    @Autowired
+    private UsersRepository usersRepository;
     public String addGodown(Godowns godown) {
+
+
+            Users existingUser = godown.getUsers();
+
+            if (existingUser==null||existingUser.getUserId() == null){
+                throw new GodownCreationException("User id field is empty");
+            }
+             Optional<Users> OpUsers=usersRepository.findById(existingUser.getUserId());
+             if(OpUsers.isEmpty()){
+                 throw new GodownCreationException("User not found in the database");
+             }
+
+            if (existingUser != null) {
+                Godowns existingGodown = godownsRepository.findByUsersUserId(existingUser.getUserId());
+                if (existingGodown != null) {
+                    throw new GodownCreationException("This User is Already Associated with Another Godown");
+                }
+//
+            }
+
+
         if (godown.getLocation() == null || godown.getLocation().isEmpty()) {
             throw new GodownCreationException("Location cannot be null for a Godown");
         }
