@@ -25,16 +25,22 @@ public class GodownsService {
     public String addGodown(Godowns godown) {
 
 
-            // Check if the user is already associated with another godown
-            Users existingUser = godown.getUsers(); // Assuming getUsers returns the associated user
-            if (existingUser==null){
+            Users existingUser = godown.getUsers();
+
+            if (existingUser==null||existingUser.getUserId() == null){
                 throw new GodownCreationException("User id field is empty");
             }
+             Optional<Users> OpUsers=usersRepository.findById(existingUser.getUserId());
+             if(OpUsers.isEmpty()){
+                 throw new GodownCreationException("User not found in the database");
+             }
+
             if (existingUser != null) {
                 Godowns existingGodown = godownsRepository.findByUsersUserId(existingUser.getUserId());
                 if (existingGodown != null) {
-                    throw new GodownCreationException("User is already mapped to another godown");
+                    throw new GodownCreationException("This User is Already Associated with Another Godown");
                 }
+//
             }
 
 
