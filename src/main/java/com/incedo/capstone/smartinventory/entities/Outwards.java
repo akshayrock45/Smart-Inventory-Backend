@@ -3,6 +3,7 @@ package com.incedo.capstone.smartinventory.entities;
 import jakarta.persistence.*;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Entity
 public class Outwards {
@@ -11,13 +12,13 @@ public class Outwards {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long OutwardsId;
     private String ItemName;
-    private int InvoiceNo;
+    private long InvoiceNo = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
     private String DateOfSupply;
     private String DateOfDelivery;
     private String DeliveredTo;
     private int quantity;
     private String Purpose;
-    private int ReceiptNo;
+    private long ReceiptNo = System.currentTimeMillis();
     private String BillValue;
     private String BillCheckedBy;
 
@@ -82,11 +83,11 @@ public class Outwards {
         ItemName = itemName;
     }
 
-    public int getInvoiceNo() {
+    public long getInvoiceNo() {
         return InvoiceNo;
     }
 
-    public void setInvoiceNo(int invoiceNo) {
+    public void setInvoiceNo(long invoiceNo) {
         InvoiceNo = invoiceNo;
     }
 
@@ -130,11 +131,11 @@ public class Outwards {
         Purpose = purpose;
     }
 
-    public int getReceiptNo() {
+    public long getReceiptNo() {
         return ReceiptNo;
     }
 
-    public void setReceiptNo(int receiptNo) {
+    public void setReceiptNo(long receiptNo) {
         ReceiptNo = receiptNo;
     }
 
