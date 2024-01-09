@@ -13,7 +13,7 @@ public class Returns {
     private Double quantity;
     private String DateOfDelivery;
     private String DateOfReturn;
-    private int ReceiptNo;
+    private long ReceiptNo = System.currentTimeMillis();
     private String ReceivedBy;
     private String BillValue;
     private String BillCheckedBy;
@@ -75,11 +75,11 @@ public class Returns {
         DateOfReturn = dateOfReturn;
     }
 
-    public int getReceiptNo() {
+    public long getReceiptNo() {
         return ReceiptNo;
     }
 
-    public void setReceiptNo(int receiptNo) {
+    public void setReceiptNo(long receiptNo) {
         ReceiptNo = receiptNo;
     }
 

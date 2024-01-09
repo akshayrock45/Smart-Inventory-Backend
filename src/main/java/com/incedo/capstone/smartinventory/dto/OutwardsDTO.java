@@ -4,13 +4,13 @@ public class OutwardsDTO {
 
     private Long OutwardsId;
     private String ItemName;
-    private int InvoiceNo;
+    private long InvoiceNo;
     private String DateOfSupply;
     private String DateOfDelivery;
     private String DeliveredTo;
     private int quantity;
     private String Purpose;
-    private int ReceiptNo;
+    private long ReceiptNo;
     private String BillValue;
     private String BillCheckedBy;
 
@@ -47,11 +47,11 @@ public class OutwardsDTO {
         ItemName = itemName;
     }
 
-    public int getInvoiceNo() {
+    public long getInvoiceNo() {
         return InvoiceNo;
     }
 
-    public void setInvoiceNo(int invoiceNo) {
+    public void setInvoiceNo(long invoiceNo) {
         InvoiceNo = invoiceNo;
     }
 
@@ -95,11 +95,11 @@ public class OutwardsDTO {
         Purpose = purpose;
     }
 
-    public int getReceiptNo() {
+    public long getReceiptNo() {
         return ReceiptNo;
     }
 
-    public void setReceiptNo(int receiptNo) {
+    public void setReceiptNo(long receiptNo) {
         ReceiptNo = receiptNo;
     }
 
