@@ -67,6 +67,7 @@ public class GodownsService {
             Godowns existingGodown = op.get();
             existingGodown.setLocation(godownsDto.getLocation());
             existingGodown.setCapacityInQuintals(godownsDto.getCapacityInQuintals());
+            existingGodown.setStatus(godownsDto.getStatus());
 
             Godowns updatedGodown = godownsRepository.save(existingGodown);
 
@@ -125,5 +126,26 @@ public class GodownsService {
 
     public List<Godowns> fetchGodowns2() {
         return godownsRepository.findAll();
+    }
+
+    public String changeStatus(long godownId) {
+        Optional<Godowns> op = godownsRepository.findById(godownId);
+
+        if(op.isPresent())
+        {
+            Godowns existinggodown  = op.get();
+            Boolean status = existinggodown.getStatus();
+            if(status == false || status == null)
+            {
+                existinggodown.setStatus(true);
+            }
+            else {
+                existinggodown.setStatus(false);
+            }
+            godownsRepository.save(existinggodown);
+            return "Godown's Status is changed";
+        }
+        else
+            throw new GodownNotFoundException("Godown Not found for id: " + godownId);
     }
 }
