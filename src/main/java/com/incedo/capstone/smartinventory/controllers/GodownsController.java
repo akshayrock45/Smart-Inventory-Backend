@@ -43,6 +43,20 @@ public class GodownsController {
         }
     }
 
+    @PutMapping("/godowns/changeStatus/{godownId}")
+    @Operation(summary = "Change Status of the godown here")
+    public ResponseEntity<String> changeStatus(@PathVariable("godownId") long godownId)
+    {
+        try{
+            String message = godownsService.changeStatus(godownId);
+            return new ResponseEntity<>(message,HttpStatus.OK);
+        }
+        catch (GodownNotFoundException gnfe)
+        {
+            return new ResponseEntity<>(gnfe.getMessage(),HttpStatus.NOT_FOUND);
+        }
+    }
+
     @GetMapping("/godowns")
     @Operation(summary = "Fetches all Godowns")
     public List<GodownsDTO> fetchGodowns(){

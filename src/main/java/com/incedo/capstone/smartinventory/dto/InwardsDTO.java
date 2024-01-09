@@ -6,10 +6,10 @@ public class InwardsDTO {
     private String NameOfTheSupplier;
     private String DateOfSupply;
     private String ItemName;
-    private int InvoiceNo;
+    private long InvoiceNo;
     private int quantity;
     private String receivedBy;
-    private int ReceiptNo;
+    private long ReceiptNo;
     private String BillCheckedBy;
 
 
@@ -60,11 +60,11 @@ public class InwardsDTO {
         ItemName = itemName;
     }
 
-    public int getInvoiceNo() {
+    public long getInvoiceNo() {
         return InvoiceNo;
     }
 
-    public void setInvoiceNo(int invoiceNo) {
+    public void setInvoiceNo(long invoiceNo) {
         InvoiceNo = invoiceNo;
     }
 
@@ -84,11 +84,11 @@ public class InwardsDTO {
         this.receivedBy = receivedBy;
     }
 
-    public int getReceiptNo() {
+    public long getReceiptNo() {
         return ReceiptNo;
     }
 
-    public void setReceiptNo(int receiptNo) {
+    public void setReceiptNo(long receiptNo) {
         ReceiptNo = receiptNo;
     }
 

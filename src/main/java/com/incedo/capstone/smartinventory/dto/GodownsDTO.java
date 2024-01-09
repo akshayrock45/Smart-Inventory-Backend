@@ -8,6 +8,7 @@ public class GodownsDTO {
     private String location;
     private Double capacityInQuintals;
     private LocalDate startDate;
+    private Boolean status;
 
 
     @Override
@@ -18,6 +19,14 @@ public class GodownsDTO {
                 ", capacityInQuintals=" + capacityInQuintals +
                 ", startDate=" + startDate +
                 '}';
+    }
+
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
     }
 
     public long getGodownId() {

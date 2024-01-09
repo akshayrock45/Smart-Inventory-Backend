@@ -14,6 +14,7 @@ public class GodownsMapper {
         godownsDto.setLocation(godowns.getLocation());
         godownsDto.setCapacityInQuintals(godowns.getCapacityInQuintals());
         godownsDto.setStartDate(godowns.getStartDate());
+        godownsDto.setStatus(godowns.getStatus());
 
         return godownsDto;
     }

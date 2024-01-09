@@ -14,6 +14,7 @@ public class Godowns {
     private String location = null;
     private Double capacityInQuintals = null;
     private LocalDate startDate = null;
+    private Boolean status = true;
 
     @OneToOne(optional = false)
     @JoinColumn(name= "user_id")
@@ -28,6 +29,14 @@ public class Godowns {
                 ", startDate=" + startDate +
                 ", users=" + users +
                 '}';
+    }
+
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
     }
 
     public Users getUsers() {
