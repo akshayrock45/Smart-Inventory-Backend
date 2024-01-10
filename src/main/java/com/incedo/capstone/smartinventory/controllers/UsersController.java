@@ -4,7 +4,6 @@ import com.incedo.capstone.smartinventory.dto.UsersDTO;
 import com.incedo.capstone.smartinventory.entities.Users;
 import com.incedo.capstone.smartinventory.exceptions.IncorrectPasswordException;
 import com.incedo.capstone.smartinventory.exceptions.UserNotFoundException;
-import com.incedo.capstone.smartinventory.mapper.UsersMapper;
 import com.incedo.capstone.smartinventory.services.UsersService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +50,35 @@ public class UsersController {
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             return new ResponseEntity<>("An error occurred while updating the user.", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+//    @PutMapping("/users/changePassword/{userId}")
+//    @Operation(summary = "Update Customer Password Here")
+//    public ResponseEntity<Object> changePasswordById(
+//            @PathVariable("userId") long userId,
+//            @RequestBody Users user) {
+//
+//        try {
+//            Users updatedUsers = usersService.changePassword(userId, user);
+//            return new ResponseEntity<>(updatedUsers, HttpStatus.OK);
+//        } catch (UserNotFoundException ex) {
+//            return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+//        } catch (Exception e) {
+//            return new ResponseEntity<>("An error occurred while updating the user.", HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//    }
+
+    @PutMapping("/users/changePassword/{userId}")
+    @Operation(summary = "Update Customer Password Here")
+    public ResponseEntity<String> changeUserPassword(@PathVariable long userId, @RequestBody String newPassword) {
+        try {
+            usersService.changePassword(userId, newPassword);
+            return ResponseEntity.ok("User Password Updated");
+        } catch (UserNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found with ID: " + userId);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating password");
         }
     }
 

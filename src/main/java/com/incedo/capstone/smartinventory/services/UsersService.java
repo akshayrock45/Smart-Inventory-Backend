@@ -7,13 +7,8 @@ import com.incedo.capstone.smartinventory.exceptions.UserCreationException;
 import com.incedo.capstone.smartinventory.exceptions.UserNotFoundException;
 import com.incedo.capstone.smartinventory.mapper.UsersMapper;
 import com.incedo.capstone.smartinventory.repository.UsersRepository;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,12 +27,9 @@ public class UsersService {
         Users existingUser = usersRepository.findByEmail(user.getEmail());
 
 
-
-        if(existingUser != null && existingUser.getEmail().equals(user.getEmail()))
-        {
-            throw  new UserCreationException("User Already Exist! with the same Email ");
-        }
-        else {
+        if (existingUser != null && existingUser.getEmail().equals(user.getEmail())) {
+            throw new UserCreationException("User Already Exist! with the same Email ");
+        } else {
             Users savedUser = usersRepository.save(user);
             if (savedUser != null) {
                 return "User Created";
@@ -64,7 +56,7 @@ public class UsersService {
 
     public UsersDTO updateUser(long userId, UsersDTO updatedUserDto) {
         // Find the existing user by username
-        Optional<Users>  op = usersRepository.findById(userId);
+        Optional<Users> op = usersRepository.findById(userId);
 
         if (op.isPresent()) {
             // Update the user with the new values
@@ -86,7 +78,7 @@ public class UsersService {
         }
     }
 
-    public List<UsersDTO> fetchUsers(){
+    public List<UsersDTO> fetchUsers() {
         return usersRepository.findAll()
                 .stream().
                 map(UsersMapper::convertToDto).
@@ -140,12 +132,9 @@ public class UsersService {
 
         if (existingUser != null) {
 
-            if(existingUser.getPwd().matches(user.getPwd()))
-            {
+            if (existingUser.getPwd().matches(user.getPwd())) {
                 return UsersMapper.convertToDto(existingUser);
-            }
-            else
-            {
+            } else {
                 throw new IncorrectPasswordException("Incorrect password for user: " + user.getUsername());
             }
 
@@ -158,14 +147,36 @@ public class UsersService {
     public UsersDTO fetchById(long userId) {
         Optional<Users> op = usersRepository.findById(userId);
 
-        if(op.isPresent())
-        {
+        if (op.isPresent()) {
             Users existingUser = op.get();
 
             return UsersMapper.convertToDto(existingUser);
         }
         throw new UserNotFoundException("No records found for: " + userId);
     }
+
+    public Users changePassword(long userId, String newPassword) {
+        Optional<Users> user = usersRepository.findById(userId);
+        if (user.isPresent()) {
+            Users exuser = user.get();
+            exuser.setPwd(newPassword);
+            usersRepository.save(exuser);
+            return exuser;
+        } else {
+            throw new UserNotFoundException("User Not Found With Id");
+        }
+    }
+
+}
+
+
+
+
+
+
+
+
+
 
 //    public List<UsersDTO> fetchAllUsersByName(String Username)
 //    {
@@ -175,4 +186,4 @@ public class UsersService {
 //                collect(Collectors.toList());
 //
 //    }
-}
+
