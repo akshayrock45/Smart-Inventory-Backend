@@ -1,11 +1,13 @@
 package com.incedo.capstone.smartinventory.services;
 
 import com.incedo.capstone.smartinventory.dto.InwardsDTO;
+import com.incedo.capstone.smartinventory.entities.Godowns;
 import com.incedo.capstone.smartinventory.entities.Inwards;
 import com.incedo.capstone.smartinventory.entities.Products;
 import com.incedo.capstone.smartinventory.exceptions.InwardsCreationException;
 import com.incedo.capstone.smartinventory.exceptions.InwardsNotFoundException;
 import com.incedo.capstone.smartinventory.mapper.InwardsMapper;
+import com.incedo.capstone.smartinventory.repository.GodownsRepository;
 import com.incedo.capstone.smartinventory.repository.InwardsRepository;
 import com.incedo.capstone.smartinventory.repository.ProductsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,9 @@ public class InwardsService {
     @Autowired
     ProductsRepository productsRepository;
 
+    @Autowired
+    GodownsRepository godownsRepository;
+
     public String addInwards(Inwards inwards) {
 
         Inwards savedInwards = inwardsRepository.save(inwards);
@@ -38,15 +43,39 @@ public class InwardsService {
                 if(op.isPresent())
                 {
                     Products existingProducts = op.get();
-                    existingProducts.setQuantity(existingProducts.getQuantity() + inwards.getQuantity());
+                    existingProducts.setQuantity(existingProducts.getQuantity() - inwards.getQuantity());
 
                     productsRepository.save(existingProducts);
+                }
+            }Godowns godown = null;
+            if (inwards.getGodowns() != null && inwards.getGodowns().getGodownId() != 0) {
+                godown = godownsRepository.findById(inwards.getGodowns().getGodownId()).orElse(null);
+            }
+            if (godown != null) {
+                Double currentCapacity = godown.getCapacityInQuintals();
+                Double totalProductCapacity = (double) inwards.getQuantity();
+
+
+
+                if (currentCapacity != null && totalProductCapacity != null) {
+                    Double newCapacity = currentCapacity - totalProductCapacity;
+
+                    if (newCapacity >= 0) {
+                        godown.setCapacityInQuintals(newCapacity);
+                        godownsRepository.save(godown);
+
+
+                        return "Inwards Added";
+                    } else {
+                        throw new InwardsCreationException("Insufficient capacity in the godown.");
+                    }
                 }
             }
             return "Inwards Added";
         }
         throw new InwardsCreationException("There is some problem creating Inwards");
     }
+
 
     public InwardsDTO updateInwards(long inwardsId, InwardsDTO inwardsDto) {
 
