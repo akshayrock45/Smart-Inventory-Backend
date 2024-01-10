@@ -68,7 +68,7 @@ public class InwardsService {
                         return "Inwards Added";
                     } else {
                         throw new InwardsCreationException("Insufficient capacity in the godown.");
-                    }////
+                    }/////
                 }
             }
             return "Inwards Added";
