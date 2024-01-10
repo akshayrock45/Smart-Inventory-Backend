@@ -1,11 +1,14 @@
 package com.incedo.capstone.smartinventory.services;
 
 import com.incedo.capstone.smartinventory.dto.OutwardsDTO;
+import com.incedo.capstone.smartinventory.entities.Godowns;
 import com.incedo.capstone.smartinventory.entities.Outwards;
 import com.incedo.capstone.smartinventory.entities.Products;
+import com.incedo.capstone.smartinventory.exceptions.InwardsCreationException;
 import com.incedo.capstone.smartinventory.exceptions.OutwardsCreationException;
 import com.incedo.capstone.smartinventory.exceptions.OutwardsNotFoundException;
 import com.incedo.capstone.smartinventory.mapper.OutwardsMapper;
+import com.incedo.capstone.smartinventory.repository.GodownsRepository;
 import com.incedo.capstone.smartinventory.repository.OutwardsRepository;
 import com.incedo.capstone.smartinventory.repository.ProductsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +26,9 @@ public class OutwardsService {
 
     @Autowired
     ProductsRepository productsRepository;
+
+    @Autowired
+    GodownsRepository godownsRepository;
 
     public String addOutwards(Outwards outwards) {
 
@@ -48,6 +54,33 @@ public class OutwardsService {
                     productsRepository.save(existingProducts);
                 }
             }
+            Godowns godown = null;
+            if (outwards.getGodowns() != null && outwards.getGodowns().getGodownId() != 0) {
+                godown = godownsRepository.findById(outwards.getGodowns().getGodownId()).orElse(null);
+            }
+
+            if(godown!=null){
+                Double GodownCapacity= godown.getCapacityInQuintals();
+                Double OutwardsQuantity= (double) outwards.getQuantity();
+
+                if(GodownCapacity!=null && OutwardsQuantity!=null){
+
+                    Double newCapacity=GodownCapacity+OutwardsQuantity;
+
+                    if (newCapacity>=0){
+                        godown.setCapacityInQuintals(newCapacity);
+                        godownsRepository.save(godown);
+                        return "outwards Added";
+
+                    }
+                    else {
+                        throw new OutwardsCreationException("Insufficient capacity in the godown.");
+                    }
+
+
+                }
+            }
+
             return "Added Outwards";
         }
         else {
