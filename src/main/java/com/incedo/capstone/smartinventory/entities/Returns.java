@@ -18,6 +18,36 @@ public class Returns {
     private String BillValue;
     private String BillCheckedBy;
 
+
+
+    private boolean IsDamaged;
+
+    public boolean getIsDamaged() {
+        return IsDamaged;
+    }
+
+    public void setIsDamaged(boolean damaged) {
+        IsDamaged = damaged;
+    }
+
+    @Override
+    public String toString() {
+        return "Returns{" +
+                "Returnid=" + Returnid +
+                ", ItemName='" + ItemName + '\'' +
+                ", quantity=" + quantity +
+                ", DateOfDelivery='" + DateOfDelivery + '\'' +
+                ", DateOfReturn='" + DateOfReturn + '\'' +
+                ", ReceiptNo=" + ReceiptNo +
+                ", ReceivedBy='" + ReceivedBy + '\'' +
+                ", BillValue='" + BillValue + '\'' +
+                ", BillCheckedBy='" + BillCheckedBy + '\'' +
+                ", IsDamaged=" + IsDamaged +
+                ", godowns=" + godowns +
+                ", outwards=" + outwards +
+                '}';
+    }
+
     @ManyToOne(optional= false)
     @JoinColumn(name="godown_iD" )
     private Godowns godowns;

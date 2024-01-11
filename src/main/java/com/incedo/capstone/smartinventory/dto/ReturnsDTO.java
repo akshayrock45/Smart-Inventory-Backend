@@ -12,6 +12,32 @@ public class ReturnsDTO {
     private String BillValue;
     private String BillCheckedBy;
 
+    private boolean IsDamaged;
+
+    public boolean getIsDamaged() {
+        return IsDamaged;
+    }
+
+    public void setIsDamaged(boolean damaged) {
+        IsDamaged = damaged;
+    }
+
+    @Override
+    public String toString() {
+        return "ReturnsDTO{" +
+                "InvoiceNo=" + InvoiceNo +
+                ", ItemName='" + ItemName + '\'' +
+                ", quantity=" + quantity +
+                ", DateOfDelivery='" + DateOfDelivery + '\'' +
+                ", DateOfReturn='" + DateOfReturn + '\'' +
+                ", ReceiptNo=" + ReceiptNo +
+                ", ReceivedBy='" + ReceivedBy + '\'' +
+                ", BillValue='" + BillValue + '\'' +
+                ", BillCheckedBy='" + BillCheckedBy + '\'' +
+                ", IsDamaged=" + IsDamaged +
+                '}';
+    }
+
     public long getInvoiceNo() {
         return InvoiceNo;
     }

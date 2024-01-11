@@ -52,11 +52,17 @@ public class ReturnsController {
 
     @PostMapping("/returns/addReturns")
     @Operation(summary = "add Returns here")
-    public ResponseEntity<String> addReturns(@RequestBody Returns returns){
-        String message = returnsService.addReturns(returns);
-        ResponseEntity<String> re = new ResponseEntity<>(message, HttpStatus.CREATED);
-        return re;
+    public ResponseEntity<String> addReturns(@RequestBody Returns returns) {
+        try {
+            String resultMessage = returnsService.addReturn(returns);
+            // If added successfully, return a success response
+            return new ResponseEntity<>(resultMessage, HttpStatus.CREATED);
+        } catch (RuntimeException e) {
+            // If an error occurs, return an error response
+            return new ResponseEntity<>("Error: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
+
 
     @PutMapping("/returns/updateReturns/{returnsId}")
     @Operation(summary = "update Returns here")

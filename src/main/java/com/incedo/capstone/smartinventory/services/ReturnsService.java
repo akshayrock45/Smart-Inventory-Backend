@@ -5,10 +5,12 @@ import com.incedo.capstone.smartinventory.entities.Godowns;
 import com.incedo.capstone.smartinventory.entities.Inwards;
 import com.incedo.capstone.smartinventory.entities.Returns;
 import com.incedo.capstone.smartinventory.exceptions.GodownNotFoundException;
+import com.incedo.capstone.smartinventory.exceptions.InwardsCreationException;
 import com.incedo.capstone.smartinventory.exceptions.InwardsNotFoundException;
 import com.incedo.capstone.smartinventory.exceptions.ReturnsNotFoundException;
 import com.incedo.capstone.smartinventory.mapper.GodownsMapper;
 import com.incedo.capstone.smartinventory.mapper.ReturnsMapper;
+import com.incedo.capstone.smartinventory.repository.GodownsRepository;
 import com.incedo.capstone.smartinventory.repository.ReturnsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +24,9 @@ public class ReturnsService {
 
     @Autowired
     ReturnsRepository returnsRepository;
+
+    @Autowired
+    GodownsRepository godownsRepository;
 
     public List<ReturnsDTO> fetchReturns() {
         return returnsRepository.findAll()
@@ -46,10 +51,42 @@ public class ReturnsService {
         throw new ReturnsNotFoundException("Returns not found for id: " + returnsId);
     }
 
-    public String addReturns(Returns returns) {
-        returnsRepository.save(returns);
+    public String addReturn(Returns returns) {
+        // Save the return to Returns table
+        Returns savedReturn = returnsRepository.save(returns);
 
-        return "Returns created";
+        // Check if the product is damaged
+        if(savedReturn.getIsDamaged()){
+            return "Return added. Product is damaged, not updating Godown.";
+        }
+            // If not damaged, update Godown capacity
+            Godowns godown = null;
+            if (savedReturn.getGodowns() != null && savedReturn.getGodowns().getGodownId() != 0) {
+                godown = godownsRepository.findById(savedReturn.getGodowns().getGodownId()).orElse(null);
+            }
+            if (godown != null) {
+                Double currentCapacity = godown.getCapacityInQuintals();
+                Double totalProductCapacity = savedReturn.getQuantity();
+
+                if (currentCapacity != null && totalProductCapacity != null) {
+                    Double newCapacity = currentCapacity - totalProductCapacity;
+
+                    if (newCapacity >= 0) {
+                        godown.setCapacityInQuintals(newCapacity);
+                        godownsRepository.save(godown);
+
+                        return "Return added, and Godown updated.";
+                    } else {
+                        // If there's insufficient capacity, delete the added return and throw an exception
+                        returnsRepository.delete(savedReturn);
+                        throw new ReturnsNotFoundException("Insufficient capacity in the return.");
+                    }
+                }
+            }
+
+
+
+        return "Return added.";
     }
 
     public ReturnsDTO updateReturns(long returnsId, ReturnsDTO returnsDTO) {
@@ -65,6 +102,7 @@ public class ReturnsService {
             existingReturns.setReceivedBy(returnsDTO.getReceivedBy());
             existingReturns.setBillValue(returnsDTO.getBillValue());
             existingReturns.setBillCheckedBy(returnsDTO.getBillCheckedBy());
+            existingReturns.setIsDamaged(returnsDTO.getIsDamaged());
 
             Returns updatedReturns = returnsRepository.save(existingReturns);
 
