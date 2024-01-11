@@ -17,6 +17,7 @@ public class ReturnsMapper {
         returnsDTO.setReceivedBy(returns.getReceivedBy());
         returnsDTO.setBillValue(returns.getBillValue());
         returnsDTO.setBillCheckedBy(returns.getBillCheckedBy());
+        returnsDTO.setIsDamaged(returns.getIsDamaged());
         return returnsDTO;
     }
 }
