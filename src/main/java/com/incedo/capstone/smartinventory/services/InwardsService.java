@@ -47,7 +47,8 @@ public class InwardsService {
 
                     productsRepository.save(existingProducts);
                 }
-            }Godowns godown = null;
+            }
+            Godowns godown = null;
             if (inwards.getGodowns() != null && inwards.getGodowns().getGodownId() != 0) {
                 godown = godownsRepository.findById(inwards.getGodowns().getGodownId()).orElse(null);
             }

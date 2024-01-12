@@ -22,16 +22,6 @@ public class UsersController {
     @Operation(summary = "Add Customer Here")
     public ResponseEntity<String> addUser(@RequestBody Users user) {
         String message = usersService.addUser(user);
-//        if(message.equals("User Created")) {
-//            ResponseEntity<String> re = new ResponseEntity<>(message, HttpStatus.CREATED);
-//            return re;
-//        } else if (message.equals("User Already Exist!")) {
-//
-//            ResponseEntity<String> re = new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
-//        }
-//        message = "Something Went Wrong";
-//        ResponseEntity<String> re = new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
-//        return re;
 
         ResponseEntity<String> re = new ResponseEntity<>(message, HttpStatus.CREATED);
             return re;
@@ -53,21 +43,7 @@ public class UsersController {
         }
     }
 
-//    @PutMapping("/users/changePassword/{userId}")
-//    @Operation(summary = "Update Customer Password Here")
-//    public ResponseEntity<Object> changePasswordById(
-//            @PathVariable("userId") long userId,
-//            @RequestBody Users user) {
-//
-//        try {
-//            Users updatedUsers = usersService.changePassword(userId, user);
-//            return new ResponseEntity<>(updatedUsers, HttpStatus.OK);
-//        } catch (UserNotFoundException ex) {
-//            return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
-//        } catch (Exception e) {
-//            return new ResponseEntity<>("An error occurred while updating the user.", HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//    }
+
 
     @PutMapping("/users/changePassword/{userId}")
     @Operation(summary = "Update Customer Password Here")

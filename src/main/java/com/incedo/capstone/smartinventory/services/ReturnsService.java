@@ -52,14 +52,11 @@ public class ReturnsService {
     }
 
     public String addReturn(Returns returns) {
-        // Save the return to Returns table
         Returns savedReturn = returnsRepository.save(returns);
 
-        // Check if the product is damaged
         if(savedReturn.getIsDamaged()){
             return "Return added. Product is damaged, not updating Godown.";
         }
-            // If not damaged, update Godown capacity
             Godowns godown = null;
             if (savedReturn.getGodowns() != null && savedReturn.getGodowns().getGodownId() != 0) {
                 godown = godownsRepository.findById(savedReturn.getGodowns().getGodownId()).orElse(null);
@@ -77,7 +74,6 @@ public class ReturnsService {
 
                         return "Return added, and Godown updated.";
                     } else {
-                        // If there's insufficient capacity, delete the added return and throw an exception
                         returnsRepository.delete(savedReturn);
                         throw new ReturnsNotFoundException("Insufficient capacity in the return.");
                     }

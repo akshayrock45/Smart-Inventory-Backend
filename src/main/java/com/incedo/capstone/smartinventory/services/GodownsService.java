@@ -69,6 +69,7 @@ public class GodownsService {
             existingGodown.setCapacityInQuintals(godownsDto.getCapacityInQuintals());
             existingGodown.setStatus(godownsDto.getStatus());
 
+
             Godowns updatedGodown = godownsRepository.save(existingGodown);
 
             return GodownsMapper.convertToDto(updatedGodown);

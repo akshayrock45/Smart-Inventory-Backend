@@ -47,8 +47,7 @@ public class OutwardsService {
                 {
                     Products existingProducts = op.get();
 
-                    // should add an if case and check whether the existing products Quantity should be greater than the outwards products quantity.
-                    // or else we have to throw an exception that not enough products Quantity to deliver and should not add the outwards.....
+
                     existingProducts.setQuantity(existingProducts.getQuantity() - outwards.getQuantity());
 
                     productsRepository.save(existingProducts);
@@ -86,7 +85,7 @@ public class OutwardsService {
         else {
             throw new OutwardsCreationException("There is Some Problem Creating the Outwards");
         }
-    }/////
+    }
 
     public OutwardsDTO updateById(long outwardsId, OutwardsDTO outwardsDto) {
 
