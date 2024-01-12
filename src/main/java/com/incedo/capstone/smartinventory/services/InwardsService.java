@@ -6,6 +6,7 @@ import com.incedo.capstone.smartinventory.entities.Inwards;
 import com.incedo.capstone.smartinventory.entities.Products;
 import com.incedo.capstone.smartinventory.exceptions.InwardsCreationException;
 import com.incedo.capstone.smartinventory.exceptions.InwardsNotFoundException;
+import com.incedo.capstone.smartinventory.exceptions.ProductsNotFoundException;
 import com.incedo.capstone.smartinventory.mapper.InwardsMapper;
 import com.incedo.capstone.smartinventory.repository.GodownsRepository;
 import com.incedo.capstone.smartinventory.repository.InwardsRepository;
@@ -76,6 +77,7 @@ public class InwardsService {
         }
         throw new InwardsCreationException("There is some problem creating Inwards");
     }
+
 
 
     public InwardsDTO updateInwards(long inwardsId, InwardsDTO inwardsDto) {
