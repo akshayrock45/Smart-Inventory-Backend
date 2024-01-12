@@ -70,7 +70,6 @@ public class ProductsController {
     public ResponseEntity<String> deleteByProductId(@PathVariable("productId") long productId)
     {
         try{
-            //String message= productsService.deleteProduct(productId);
             String message=productsService.deleteProductById(productId);
             return new ResponseEntity<>(message, HttpStatus.OK);
         }
