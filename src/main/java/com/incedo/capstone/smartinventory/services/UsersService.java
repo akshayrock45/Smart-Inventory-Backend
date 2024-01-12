@@ -20,9 +20,6 @@ public class UsersService {
     UsersRepository usersRepository;
 
     public String addUser(Users user) {
-//        BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
-//        String encryptedPwd = bcrypt.encode(user.getPwd());
-//        user.setPwd(encryptedPwd);
 
         Users existingUser = usersRepository.findByEmail(user.getEmail());
 
@@ -37,29 +34,13 @@ public class UsersService {
             throw new UserCreationException("There is Some Problem Creating the User");
         }
 
-//        boolean existingUser = usersRepository.existsById(user.getUsername());
-
-//        if(existingUser)
-//        {
-//            throw  new UserCreationException("User Already Exist!");
-//        }
-//        else {
-//            Users savedUser = usersRepository.save(user);
-//            if (savedUser != null) {
-//                return "User Created";
-//            }
-//            throw new UserCreationException("There is Some Problem Creating the User");
-//        }
-
     }
 
 
     public UsersDTO updateUser(long userId, UsersDTO updatedUserDto) {
-        // Find the existing user by username
         Optional<Users> op = usersRepository.findById(userId);
 
         if (op.isPresent()) {
-            // Update the user with the new values
             Users existingUser = op.get();
             existingUser.setUsername(updatedUserDto.getUsername());
             existingUser.setRole(updatedUserDto.getRole());
@@ -68,10 +49,8 @@ public class UsersService {
             existingUser.setEmail(updatedUserDto.getEmail());
 
 
-            // Save the updated user
             Users updatedUser = usersRepository.save(existingUser);
 
-            // Convert and return the updated user DTO
             return UsersMapper.convertToDto(updatedUser);
         } else {
             throw new UserNotFoundException("User not found with username: " + userId);
@@ -85,23 +64,7 @@ public class UsersService {
                 collect(Collectors.toList());
     }
 
-//    public List<UsersDTO> fetchUserByName(String username) {
-//        Users user = usersRepository.findByUsername(username);
-//
-//        try {
-//            List<Users> users = usersRepository.findByUsernameList(username)
-//                    .stream().
-//                    map(UsersMapper::convertToDto).
-//                    collect(Collectors.toList());
-//        } catch (Exception e) {
-//            throw new RuntimeException(e);
-//        }
-////        if (user != null) {
-////            return UsersMapper.convertToDto(user);
-////        } else {
-////            throw new UserNotFoundException("No Record found for the user: " + username);
-////        }
-//    }
+
 
     public List<UsersDTO> fetchUserByName(String username) {
         List<Users> users = usersRepository.findByUsernameContaining(username);
@@ -127,7 +90,6 @@ public class UsersService {
 
 
     public UsersDTO authenticateUser(Users user) {
-        // Find user by username
         Users existingUser = usersRepository.findByUsername(user.getUsername());
 
         if (existingUser != null) {
@@ -139,7 +101,6 @@ public class UsersService {
             }
 
         } else {
-            // User does not exist, throw an exception
             throw new UserNotFoundException("User not found: " + user.getUsername());
         }
     }
@@ -176,14 +137,4 @@ public class UsersService {
 
 
 
-
-
-//    public List<UsersDTO> fetchAllUsersByName(String Username)
-//    {
-//        return usersRepository.findAll()
-//                .stream().
-//                map(UsersMapper::convertToDto).
-//                collect(Collectors.toList());
-//
-//    }
 
