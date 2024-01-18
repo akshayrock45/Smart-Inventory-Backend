@@ -1,6 +1,5 @@
 package com.incedo.capstone.smartinventory;
 
-import com.incedo.capstone.smartinventory.controller.tests.UsersControllerTest;
 import com.incedo.capstone.smartinventory.dto.tests.UsersDtoTest;
 import com.incedo.capstone.smartinventory.entity.tests.UsersTest;
 import org.junit.jupiter.api.Test;
