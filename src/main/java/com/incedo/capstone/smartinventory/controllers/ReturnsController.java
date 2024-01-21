@@ -87,7 +87,7 @@ public class ReturnsController {
             String message= returnsService.deleteById(returnsId);
             return new ResponseEntity<>(message, HttpStatus.OK);
         }
-        catch(InwardsNotFoundException rnfe)
+        catch(ReturnsNotFoundException rnfe)
         {
             return new ResponseEntity<>(rnfe.getMessage(), HttpStatus.OK);
         }
