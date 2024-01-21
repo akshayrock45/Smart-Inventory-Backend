@@ -66,7 +66,6 @@ public class UsersControllerTest {
         verify(usersService, times(1)).updateUser(userId, updatedUserDto);
     }
 
-    // Add similar tests for other controller methods...
 
     @Test
     public void testAuthenticateUser() {
@@ -81,5 +80,4 @@ public class UsersControllerTest {
         verify(usersService, times(1)).authenticateUser(user);
     }
 
-    // Add more tests as needed...
 }
