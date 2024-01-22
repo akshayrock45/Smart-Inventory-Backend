@@ -55,10 +55,8 @@ public class ReturnsController {
     public ResponseEntity<String> addReturns(@RequestBody Returns returns) {
         try {
             String resultMessage = returnsService.addReturn(returns);
-            // If added successfully, return a success response
             return new ResponseEntity<>(resultMessage, HttpStatus.CREATED);
         } catch (RuntimeException e) {
-            // If an error occurs, return an error response
             return new ResponseEntity<>("Error: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
@@ -89,7 +87,7 @@ public class ReturnsController {
             String message= returnsService.deleteById(returnsId);
             return new ResponseEntity<>(message, HttpStatus.OK);
         }
-        catch(InwardsNotFoundException rnfe)
+        catch(ReturnsNotFoundException rnfe)
         {
             return new ResponseEntity<>(rnfe.getMessage(), HttpStatus.OK);
         }

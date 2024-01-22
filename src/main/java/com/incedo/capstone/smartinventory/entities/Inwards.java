@@ -61,7 +61,7 @@ public class Inwards {
                 ", receivedBy='" + receivedBy + '\'' +
                 ", ReceiptNo=" + ReceiptNo +
                 ", BillCheckedBy='" + BillCheckedBy + '\'' +
-//                ", godowns=" + godowns +
+               ", godowns=" + godowns +
                 ", productsToPurchase=" + productsToPurchase +
                 '}';
     }

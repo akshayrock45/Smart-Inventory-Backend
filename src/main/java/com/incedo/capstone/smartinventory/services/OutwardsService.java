@@ -47,8 +47,7 @@ public class OutwardsService {
                 {
                     Products existingProducts = op.get();
 
-                    // should add an if case and check whether the existing products Quantity should be greater than the outwards products quantity.
-                    // or else we have to throw an exception that not enough products Quantity to deliver and should not add the outwards.....
+
                     existingProducts.setQuantity(existingProducts.getQuantity() - outwards.getQuantity());
 
                     productsRepository.save(existingProducts);
@@ -86,37 +85,38 @@ public class OutwardsService {
         else {
             throw new OutwardsCreationException("There is Some Problem Creating the Outwards");
         }
-    }/////
+    }
 
     public OutwardsDTO updateById(long outwardsId, OutwardsDTO outwardsDto) {
-
         Optional<Outwards> op = outwardsRepository.findById(outwardsId);
 
-        if(op.isPresent())
-        {
+        if (op.isPresent()) {
             Outwards existingOutwards = op.get();
 
-            existingOutwards.setBillCheckedBy(outwardsDto.getBillCheckedBy());
-            existingOutwards.setBillValue(outwardsDto.getBillValue());
-            existingOutwards.setDateOfDelivery(outwardsDto.getDateOfDelivery());
-            existingOutwards.setInvoiceNo(outwardsDto.getInvoiceNo());
-            existingOutwards.setReceiptNo(outwardsDto.getReceiptNo());
-            existingOutwards.setPurpose(outwardsDto.getPurpose());
-            existingOutwards.setItemName(outwardsDto.getItemName());
-            existingOutwards.setDeliveredTo(outwardsDto.getDeliveredTo());
-            existingOutwards.setQuantity(outwardsDto.getQuantity());
-            existingOutwards.setDateOfSupply(outwardsDto.getDateOfSupply());
+            // Check if the existingOutwards is not null
+            if (existingOutwards != null) {
+                existingOutwards.setBillCheckedBy(outwardsDto.getBillCheckedBy());
+                existingOutwards.setBillValue(outwardsDto.getBillValue());
+                existingOutwards.setDateOfDelivery(outwardsDto.getDateOfDelivery());
+                existingOutwards.setInvoiceNo(outwardsDto.getInvoiceNo());
+                existingOutwards.setReceiptNo(outwardsDto.getReceiptNo());
+                existingOutwards.setPurpose(outwardsDto.getPurpose());
+                existingOutwards.setItemName(outwardsDto.getItemName());
+                existingOutwards.setDeliveredTo(outwardsDto.getDeliveredTo());
+                existingOutwards.setQuantity(outwardsDto.getQuantity());
+                existingOutwards.setDateOfSupply(outwardsDto.getDateOfSupply());
 
-            Outwards savedOutwards = outwardsRepository.save(existingOutwards);
+                Outwards savedOutwards = outwardsRepository.save(existingOutwards);
 
-            return OutwardsMapper.convertToDto(savedOutwards);
-
-
-        }
-        else {
+                return OutwardsMapper.convertToDto(savedOutwards);
+            } else {
+                throw new OutwardsNotFoundException("Outwards not found with id: " + outwardsId);
+            }
+        } else {
             throw new OutwardsNotFoundException("Outwards not found with id: " + outwardsId);
         }
     }
+
 
     public List<OutwardsDTO> fetchOutwards() {
 
@@ -148,8 +148,9 @@ public class OutwardsService {
         {
             Outwards existingOutwards = op.get();
 
-            outwardsRepository.delete(existingOutwards);
-            return " Outwards deleetd Successfully";
+            if (existingOutwards != null) {
+                outwardsRepository.delete(existingOutwards);
+            }
         }
         throw new OutwardsNotFoundException("No records found for id: " + outwardsId);
     }

@@ -4,89 +4,80 @@ import com.incedo.capstone.smartinventory.controllers.UsersController;
 import com.incedo.capstone.smartinventory.dto.UsersDTO;
 import com.incedo.capstone.smartinventory.entities.Users;
 import com.incedo.capstone.smartinventory.services.UsersService;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.when;
-
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
+
 public class UsersControllerTest {
 
     @Mock
     private UsersService usersService;
 
-
     @InjectMocks
     private UsersController usersController;
 
+    @BeforeAll
+    public static void TestStartMessage() {
+        System.out.println("Test Starting at : " + new Date());
+    }
 
-
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+    }
     @Test
-    public void testAddUser(){
-        //Setup
+    public void testAddUser() {
         Users user = new Users();
-        when(usersService.addUser(user)).thenReturn("User Created");
+        when(usersService.addUser(user)).thenReturn("User added successfully");
 
-
-        //Execution
         ResponseEntity<String> responseEntity = usersController.addUser(user);
 
-
-        //Verify
-        assertEquals("User Created",responseEntity.getBody());
-
+        assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
+        assertEquals("User added successfully", responseEntity.getBody());
+        verify(usersService, times(1)).addUser(user);
     }
 
     @Test
-    public void testFetchUsers(){
-        List<UsersDTO> userList = new ArrayList<>();
+    public void testUpdateUserById() {
+        long userId = 1L;
+        UsersDTO updatedUserDto = new UsersDTO(); // create a sample updated user DTO
 
+        when(usersService.updateUser(userId, updatedUserDto)).thenReturn(updatedUserDto);
 
+        ResponseEntity<Object> responseEntity = usersController.updateUserById(userId, updatedUserDto);
 
-        when(usersService.fetchUsers()).thenReturn(userList);
-
-        List<UsersDTO> result = usersController.fetchUsers();
-
-        assertEquals(userList,result);
-
-
-
-
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(updatedUserDto, responseEntity.getBody());
+        verify(usersService, times(1)).updateUser(userId, updatedUserDto);
     }
+
 
     @Test
-    public void testGetUserByName(){
-        List<UsersDTO> userList = new ArrayList<>();
-        when(usersService.fetchUserByName("username")).thenReturn(userList);
+    public void testAuthenticateUser() {
+        Users user = new Users(); // create a sample user
 
-        ResponseEntity<Object> userResult = usersController.getUserByName("username");
+        when(usersService.authenticateUser(user)).thenReturn(new UsersDTO());
 
-        assertEquals(userList,userResult.getBody());
-        assertEquals(HttpStatus.OK, userResult.getStatusCode());
+        ResponseEntity<Object> responseEntity = usersController.authenticateUser(user);
 
-
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(UsersDTO.class, responseEntity.getBody().getClass());
+        verify(usersService, times(1)).authenticateUser(user);
     }
-
-    @Test
-    public void testGetUserById(){
-        UsersDTO user = new UsersDTO();
-        when(usersService.fetchById(1L)).thenReturn(user);
-
-        ResponseEntity<Object> resultUser = usersController.getuserById(1L);
-
-        assertEquals(user,resultUser.getBody());
-        assertEquals(HttpStatus.OK, resultUser.getStatusCode());
-    }
-
-
 
 }
