@@ -12,7 +12,6 @@ import com.incedo.capstone.smartinventory.services.UsersServiceTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -39,14 +38,13 @@ public class SmartInventoryApplicationTests {
 		usersDtoTest.testGettersSetters();
 	}
 
-	@Test
-	void testUsersController() {
-		UsersControllerTest usersControllerTest = new UsersControllerTest();
-		usersControllerTest.testAddUser();
-		usersControllerTest.testUpdateUserById();
-		usersControllerTest.testAuthenticateUser();
-		// Add more tests from UsersControllerTest as needed...
-	}
+//	@Test
+//	void testUsersController() {
+//		UsersControllerTest usersControllerTest = new UsersControllerTest();
+//		usersControllerTest.testAddUser();
+//		usersControllerTest.testUpdateUserById();
+//		usersControllerTest.testAuthenticateUser();
+//	}
 
 	@Test
 	void testGodownsEntity() {
@@ -88,13 +86,12 @@ public class SmartInventoryApplicationTests {
 		returnsTest.testToString();
 	}
 
-	@Test
-	void testUsersService() {
-		UsersServiceTest usersServiceTest = new UsersServiceTest();
-		usersServiceTest.testAddUser_Success();
-		usersServiceTest.testAddUser_UserAlreadyExists();
-		usersServiceTest.testAuthenticateUser_Success();
-		usersServiceTest.testAuthenticateUser_IncorrectPassword();
-		// Add more tests from UsersServiceTest as needed...
-	}
+//	@Test
+//	void testUsersService() {
+//		UsersServiceTest usersServiceTest = new UsersServiceTest();
+//		usersServiceTest.testAddUser_Success();
+//		usersServiceTest.testAddUser_UserAlreadyExists();
+//		usersServiceTest.testAuthenticateUser_Success();
+//		usersServiceTest.testAuthenticateUser_IncorrectPassword();
+//	}
 }
