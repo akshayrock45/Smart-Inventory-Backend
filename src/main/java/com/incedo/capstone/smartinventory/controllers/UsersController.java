@@ -42,7 +42,18 @@ public class UsersController {
             return new ResponseEntity<>("An error occurred while updating the user.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+    @PutMapping("/users/forgotPassword/{username}")
+    @Operation(summary = "Reset Users Password")
+    public ResponseEntity<String> resettPassword(@PathVariable("username") String username, @RequestBody String newPassword) {
+        try {
+            String result = usersService.resetPassword(username, newPassword);
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (UserNotFoundException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Error resetting password", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
 
     @PutMapping("/users/changePassword/{userId}")

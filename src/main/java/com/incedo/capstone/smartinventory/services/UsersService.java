@@ -132,7 +132,8 @@ public class UsersService {
         Optional<Users> user = usersRepository.findById(userId);
         if (user.isPresent()) {
             Users exuser = user.get();
-            exuser.setPwd(newPassword);
+            BCryptPasswordEncoder passwordEncoder=new BCryptPasswordEncoder();
+            exuser.setPwd(passwordEncoder.encode(newPassword));
             System.out.println("in Update"+newPassword);
             usersRepository.save(exuser);
             return exuser;
@@ -140,6 +141,19 @@ public class UsersService {
             throw new UserNotFoundException("User Not Found With Id");
         }
     }
+    public String resetPassword(String username, String newPassword) {
+        Users user = usersRepository.findByUsername(username);
+
+        if (user != null) {
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            user.setPwd(passwordEncoder.encode(newPassword));
+            usersRepository.save(user);
+            return "Password reset successful";
+        } else {
+            throw new UserNotFoundException("User not found: " + username);
+        }
+    }
+
 
 }
 

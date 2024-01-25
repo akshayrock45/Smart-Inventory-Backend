@@ -104,7 +104,37 @@ public class UsersServiceTest {
 
         assertThrows(IncorrectPasswordException.class, () -> usersService.authenticateUser(user));
     }
+    @Test
+    void resetPassword_Success() {
+        String username = "testuser";
+        String newPassword = "newPassword123";
 
-    // Add more test cases for other methods as needed
+        Users existingUser = new Users();
+        existingUser.setUsername(username);
+        existingUser.setPwd(new BCryptPasswordEncoder().encode("oldPassword"));
+
+        when(usersRepository.findByUsername(username)).thenReturn(existingUser);
+        when(usersRepository.save(existingUser)).thenReturn(existingUser);
+
+        String result = usersService.resetPassword(username, newPassword);
+
+        assertEquals("Password reset successful", result);
+        assertTrue(new BCryptPasswordEncoder().matches(newPassword, existingUser.getPwd()));
+        verify(usersRepository, times(1)).findByUsername(username);
+        verify(usersRepository, times(1)).save(existingUser);
+    }
+
+    @Test
+    void resetPassword_UserNotFound() {
+        String username = "nonexistinguser";
+        String newPassword = "newPassword123";
+
+        when(usersRepository.findByUsername(username)).thenReturn(null);
+
+        assertThrows(UserNotFoundException.class, () -> usersService.resetPassword(username, newPassword));
+        verify(usersRepository, times(1)).findByUsername(username);
+        verify(usersRepository, never()).save(any());
+    }
+
 
 }
