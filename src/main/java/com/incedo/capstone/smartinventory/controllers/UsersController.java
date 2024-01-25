@@ -19,7 +19,7 @@ public class UsersController {
     UsersService usersService;
 
     @PostMapping("/users/addUsers")
-    @Operation(summary = "Add Customer Here")
+    @Operation(summary = "Add Users Here")
     public ResponseEntity<String> addUser(@RequestBody Users user) {
         String message = usersService.addUser(user);
 
@@ -28,7 +28,7 @@ public class UsersController {
     }
 
     @PutMapping("/users/putByUserId/{userId}")
-    @Operation(summary = "Update Customer Here")
+    @Operation(summary = "Update Users Here")
     public ResponseEntity<Object> updateUserById(
             @PathVariable("userId") long userId,
             @RequestBody UsersDTO updatedUserDto) {
@@ -46,7 +46,7 @@ public class UsersController {
 
 
     @PutMapping("/users/changePassword/{userId}")
-    @Operation(summary = "Update Customer Password Here")
+    @Operation(summary = "Update Users Password Here")
     public ResponseEntity<String> changeUserPassword(@PathVariable long userId, @RequestBody String newPassword) {
         try {
             usersService.changePassword(userId, newPassword);
@@ -59,7 +59,7 @@ public class UsersController {
     }
 
     @GetMapping("/users/getAllUsers")
-    @Operation(summary = "Fetch All Customers")
+    @Operation(summary = "Fetch All Users")
     public List<UsersDTO> fetchUsers()
     {
         return usersService.fetchUsers();
@@ -67,7 +67,7 @@ public class UsersController {
 
 
     @GetMapping("/users/getByUsername/{username}")
-    @Operation(summary = "Fetch Customer list  By Name")
+    @Operation(summary = "Fetch Users list  By Name")
     public ResponseEntity<Object> getUserByName(@PathVariable("username") String username) {
         try {
             List<UsersDTO> userDto = usersService.fetchUserByName(username);
@@ -91,7 +91,7 @@ public class UsersController {
     }
 
     @DeleteMapping("/users/deleteUsersByUsername/{username}")
-    @Operation(summary = "Delete Customer")
+    @Operation(summary = "Delete Users")
     public ResponseEntity<String> deleteUserByUsername(@PathVariable("username") String username) {
         try {
             String result = usersService.deleteUser(username);
@@ -104,7 +104,7 @@ public class UsersController {
     }
 
     @PostMapping("/users/authenticateUsers")
-    @Operation(summary = "Authenticate Customer")
+    @Operation(summary = "Authenticate Users")
     public ResponseEntity<Object> authenticateUser(@RequestBody Users user) {
         try {
             UsersDTO authenticatedUser = usersService.authenticateUser(user);

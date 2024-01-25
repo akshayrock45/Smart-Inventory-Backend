@@ -8,6 +8,7 @@ import com.incedo.capstone.smartinventory.exceptions.UserNotFoundException;
 import com.incedo.capstone.smartinventory.mapper.UsersMapper;
 import com.incedo.capstone.smartinventory.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,9 +25,17 @@ public class UsersService {
         Users existingUser = usersRepository.findByEmail(user.getEmail());
 
 
+
+
         if (existingUser != null && existingUser.getEmail().equals(user.getEmail())) {
             throw new UserCreationException("User Already Exist! with the same Email ");
         } else {
+//            System.out.println("addUsers//User pass  "+user.getPwd());
+            BCryptPasswordEncoder passwordEncoder=new BCryptPasswordEncoder();
+
+            user.setPwd(passwordEncoder.encode(user.getPwd()));
+
+//            System.out.println("addUsers//hashed password  "+passwordEncoder.encode(user.getPwd()));
             Users savedUser = usersRepository.save(user);
             if (savedUser != null) {
                 return "User Created";
@@ -93,8 +102,11 @@ public class UsersService {
         Users existingUser = usersRepository.findByUsername(user.getUsername());
 
         if (existingUser != null) {
-
-            if (existingUser.getPwd().matches(user.getPwd())) {
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            String enteredPassword = user.getPwd().trim();
+//            System.out.println("authenticate//Entered pass "+enteredPassword);
+//            System.out.println("authenticate//database pass "+existingUser.getPwd());
+            if (passwordEncoder.matches(enteredPassword, existingUser.getPwd())) {
                 return UsersMapper.convertToDto(existingUser);
             } else {
                 throw new IncorrectPasswordException("Incorrect password for user: " + user.getUsername());
@@ -121,6 +133,7 @@ public class UsersService {
         if (user.isPresent()) {
             Users exuser = user.get();
             exuser.setPwd(newPassword);
+            System.out.println("in Update"+newPassword);
             usersRepository.save(exuser);
             return exuser;
         } else {
