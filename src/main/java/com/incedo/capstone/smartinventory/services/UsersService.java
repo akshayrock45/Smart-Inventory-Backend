@@ -21,29 +21,27 @@ public class UsersService {
     UsersRepository usersRepository;
 
     public String addUser(Users user) {
+        List<Users> existingUsersWithEmail = usersRepository.findByEmail(user.getEmail());
+        List<Users> existingUsersByMobile = usersRepository.findByMobileNumber(user.getMobileNumber());
 
-        Users existingUser = usersRepository.findByEmail(user.getEmail());
-
-
-
-
-        if (existingUser != null && existingUser.getEmail().equals(user.getEmail())) {
-            throw new UserCreationException("User Already Exist! with the same Email ");
+        if (!existingUsersWithEmail.isEmpty()) {
+            throw new UserCreationException("User Already Exists with the same Email");
+        } else if (!existingUsersByMobile.isEmpty()) {
+            throw new UserCreationException("User Already Exists with the same Mobile Number");
         } else {
-//            System.out.println("addUsers//User pass  "+user.getPwd());
-            BCryptPasswordEncoder passwordEncoder=new BCryptPasswordEncoder();
-
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             user.setPwd(passwordEncoder.encode(user.getPwd()));
 
-//            System.out.println("addUsers//hashed password  "+passwordEncoder.encode(user.getPwd()));
             Users savedUser = usersRepository.save(user);
+
             if (savedUser != null) {
                 return "User Created";
+            } else {
+                throw new UserCreationException("There is Some Problem Creating the User");
             }
-            throw new UserCreationException("There is Some Problem Creating the User");
         }
-
     }
+
 
 
     public UsersDTO updateUser(long userId, UsersDTO updatedUserDto) {
