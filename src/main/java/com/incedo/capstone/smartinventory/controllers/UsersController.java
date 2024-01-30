@@ -1,5 +1,6 @@
 package com.incedo.capstone.smartinventory.controllers;
 
+import com.incedo.capstone.smartinventory.dto.PasswordDTO;
 import com.incedo.capstone.smartinventory.dto.UsersDTO;
 import com.incedo.capstone.smartinventory.entities.Users;
 import com.incedo.capstone.smartinventory.exceptions.IncorrectPasswordException;
@@ -42,11 +43,11 @@ public class UsersController {
             return new ResponseEntity<>("An error occurred while updating the user.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @PutMapping("/users/forgotPassword/{username}")
+    @PutMapping("/users/forgotPassword/")
     @Operation(summary = "Reset Users Password")
-    public ResponseEntity<String> resettPassword(@PathVariable("username") String username, @RequestBody String newPassword) {
+    public ResponseEntity<String> resettPassword(@RequestBody PasswordDTO passwordDTO) {
         try {
-            String result = usersService.resetPassword(username, newPassword);
+            String result = usersService.resetPassword(passwordDTO.getUsername(), passwordDTO.getNewPassword());
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (UserNotFoundException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
