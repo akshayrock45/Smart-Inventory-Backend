@@ -77,7 +77,6 @@ public class InwardsTest {
             inwards.setGodowns(godowns);
             inwards.setProductsToPurchase(productsToPurchase);
 
-            // Assert
             assertEquals(inwardsId, inwards.getInwardsId());
             assertEquals(nameOfTheSupplier, inwards.getNameOfTheSupplier());
             assertEquals(dateOfSupply, inwards.getDateOfSupply());

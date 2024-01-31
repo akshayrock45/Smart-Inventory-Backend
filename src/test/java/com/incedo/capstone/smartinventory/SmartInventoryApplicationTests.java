@@ -21,8 +21,6 @@ public class SmartInventoryApplicationTests {
 
 	@BeforeEach
 	void setUp() {
-		// Remove the following line
-		// MockitoAnnotations.openMocks(this);
 	}
 
 	@Test
@@ -38,13 +36,6 @@ public class SmartInventoryApplicationTests {
 		usersDtoTest.testGettersSetters();
 	}
 
-//	@Test
-//	void testUsersController() {
-//		UsersControllerTest usersControllerTest = new UsersControllerTest();
-//		usersControllerTest.testAddUser();
-//		usersControllerTest.testUpdateUserById();
-//		usersControllerTest.testAuthenticateUser();
-//	}
 
 	@Test
 	void testGodownsEntity() {
@@ -86,12 +77,4 @@ public class SmartInventoryApplicationTests {
 		returnsTest.testToString();
 	}
 
-//	@Test
-//	void testUsersService() {
-//		UsersServiceTest usersServiceTest = new UsersServiceTest();
-//		usersServiceTest.testAddUser_Success();
-//		usersServiceTest.testAddUser_UserAlreadyExists();
-//		usersServiceTest.testAuthenticateUser_Success();
-//		usersServiceTest.testAuthenticateUser_IncorrectPassword();
-//	}
 }
