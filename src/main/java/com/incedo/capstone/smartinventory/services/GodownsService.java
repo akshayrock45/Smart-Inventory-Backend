@@ -21,7 +21,7 @@ public class GodownsService {
     @Autowired
     GodownsRepository godownsRepository;
     @Autowired
-    private UsersRepository usersRepository;
+    UsersRepository usersRepository;
     public String addGodown(Godowns godown) {
 
 

@@ -1,5 +1,6 @@
 package com.incedo.capstone.smartinventory.services;//package com.incedo.capstone.smartinventory.services;
 
+import java.util.Arrays;
 
 import com.incedo.capstone.smartinventory.dto.UsersDTO;
 import com.incedo.capstone.smartinventory.entities.Users;
@@ -13,9 +14,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -34,13 +38,15 @@ public class UsersServiceTest {
     }
 
     @Test
-    void addUser_Success() {
+    public void testAddUser_Success() {
         Users user = new Users();
         user.setEmail("test@example.com");
+        user.setMobileNumber(1234567890L);
         user.setPwd("password");
 
-        when(usersRepository.findByEmail("test@example.com")).thenReturn(null);
-        when(usersRepository.save(user)).thenReturn(user);
+        Mockito.when(usersRepository.findByEmail(user.getEmail())).thenReturn(Arrays.asList());
+        Mockito.when(usersRepository.findByMobileNumber(user.getMobileNumber())).thenReturn(Arrays.asList());
+        Mockito.when(usersRepository.save(any(Users.class))).thenReturn(user);
 
         String result = usersService.addUser(user);
 
@@ -48,15 +54,36 @@ public class UsersServiceTest {
     }
 
     @Test
-    void addUser_UserAlreadyExists() {
+    public void testAddUser_UserExistsWithEmail() {
         Users user = new Users();
         user.setEmail("test@example.com");
+        user.setMobileNumber(1234567890L);
         user.setPwd("password");
 
-        when(usersRepository.findByEmail("test@example.com")).thenReturn(user);
+        Mockito.when(usersRepository.findByEmail(user.getEmail())).thenReturn(Arrays.asList(user));
 
-        assertThrows(UserCreationException.class, () -> usersService.addUser(user));
+        UserCreationException exception = assertThrows(UserCreationException.class,
+                () -> usersService.addUser(user));
+
+        assertEquals("User Already Exists with the same Email", exception.getMessage());
     }
+
+    @Test
+    public void testAddUser_UserExistsWithMobileNumber() {
+        Users user = new Users();
+        user.setEmail("test@example.com");
+        user.setMobileNumber(1234567890L);
+        user.setPwd("password");
+
+        Mockito.when(usersRepository.findByEmail(user.getEmail())).thenReturn(Arrays.asList());
+        Mockito.when(usersRepository.findByMobileNumber(user.getMobileNumber())).thenReturn(Arrays.asList(user));
+
+        UserCreationException exception = assertThrows(UserCreationException.class,
+                () -> usersService.addUser(user));
+
+        assertEquals("User Already Exists with the same Mobile Number", exception.getMessage());
+    }
+
 
     @Test
     void authenticateUser_Success() {

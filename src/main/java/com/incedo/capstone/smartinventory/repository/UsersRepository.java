@@ -15,9 +15,11 @@ public interface UsersRepository extends JpaRepository<Users,Long> {
 
     Users findByUsername(String username);
 
+
     @Query("SELECT u FROM Users u WHERE u.username LIKE %:username%")
     List<Users> findByUsernameContaining(@Param("username") String username);
-    Users findByEmail(String email);
+    List<Users> findByEmail(String email);
+    List<Users> findByMobileNumber(long mobileNumber);
 
 //    List<UsersDTO> fetchAllUsersByName(String username);
 }
