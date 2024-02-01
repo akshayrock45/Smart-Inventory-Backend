@@ -92,36 +92,6 @@ public class ReturnsServiceTest {
 
         assertEquals("Return added. Product is damaged, not updating Godown.", result);
     }
-//    @Test
-//    void testAddReturn_InsufficientCapacity() {
-//        // Mock data
-//        Returns returns = new Returns();
-//        Godowns godown = mock(Godowns.class);
-//
-//        // Mock repository interactions
-//        when(returnsRepository.save(any(Returns.class))).thenReturn(returns);
-//        when(godownsRepository.findById(anyLong())).thenReturn(Optional.of(godown));
-//
-//        // Stub the behavior using doReturn() for a method call on a real object
-//        doReturn(5.0).when(godown).getCapacityInQuintals();
-//
-//        // Set up a situation where the capacity is insufficient
-//        returns.setQuantity(10.0); // setting a return with quantity more than current capacity
-//
-//        // Test and Verify
-//        try {
-//            returnsService.addReturn(returns);
-//        } catch (Exception e) {
-//            System.out.println("Exception thrown: " + e);
-//            Assertions.assertEquals(ReturnsNotFoundException.class, e.getClass());
-//            Assertions.assertEquals("Insufficient capacity in the return.", e.getMessage());
-//        }
-//
-//        // Verify interactions
-//        verify(returnsRepository, times(1)).save(returns);
-//        verify(returnsRepository, times(1)).delete(any());
-//        verify(godownsRepository, never()).save(any());
-//    }
 
     @Test
     void testUpdateReturns_Success() {

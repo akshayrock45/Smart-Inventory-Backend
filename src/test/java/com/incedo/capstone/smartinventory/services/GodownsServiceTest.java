@@ -50,7 +50,7 @@ public class GodownsServiceTest {
         godown.setStatus(true);
 
         Users user = new Users();
-        user.setUserId(1L); // Set a valid user id
+        user.setUserId(1L);
         godown.setUsers(user);
 
         when(usersRepository.findById(anyLong())).thenReturn(Optional.of(new Users()));
